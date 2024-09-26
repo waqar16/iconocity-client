@@ -66,6 +66,18 @@ const ChatBot = () => {
       sender: "Iconicity",
       img: "/generate/chat-ai.svg",
     },
+    {
+      id: 1,
+      text: "Generate SVG icons for my creative project afuasfashfk",
+      sender: "You",
+      img: "/generate/profile4.png",
+    },
+    {
+      id: 1,
+      text: "Generate SVG icons for my creative project afuasfashfk",
+      sender: "You",
+      img: "/generate/profile4.png",
+    },
   ]);
 
   return (

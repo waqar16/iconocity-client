@@ -33,16 +33,11 @@ const GeneratePage = () => {
       {/* LeftSideBar */}
       <GenerateLeftSide />
       {/* center*/}
-      <div className="h-full flex-1 overflow-y-auto hide-scrollbar pb-10">
+      <div className="h-[calc(100vh-74px)] flex-1 overflow-y-auto hide-scrollbar pb-10">
         {/* SVG Icons Section */}
         <div className="bg-[#0E142D] border border-[#1C2037] rounded-2xl px-8 py-5">
           {/* download tab */}
           <div className="flex items-center justify-between">
-            {/* left arrow icons */}
-            <div className="flex gap-1">
-              <Icons.SquareUpLeft />
-              <Icons.SquareUpRight />
-            </div>
             {/* right download icons */}
             <div className="flex items-center gap-1.5">
               <Icons.Download />

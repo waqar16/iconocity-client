@@ -62,26 +62,26 @@ const GenerateLeftSide = () => {
   }, [showMoreHistory]);
 
   return (
-    <div className="w-72 xl:w-80 2xl:w-96 h-full overflow-y-auto hide-scrollbar bg-[#080e28] border-r border-t border-[#1C2037] text-white rounded-tr-[24px]">
+    <div className="w-72 xl:w-80 2xl:w-96 h-[calc(100vh-74px)] overflow-y-auto hide-scrollbar bg-[#080e28] border-r border-t border-[#1C2037] text-white rounded-tr-[24px]">
       {/* Search Bar */}
-      <div className="flex items-center gap-2 border-b border-[#1C2037] px-10 py-2 xl:py-3">
+      {/* <div className="flex items-center gap-2 border-b border-[#1C2037] px-10 py-2 xl:py-3">
         <Search className="w-8 h-auto text-[#7C7F99]" />
         <Input
           type="text"
           placeholder="Search"
           className="placeholder:text-gray-500 text-base bg-transparent border-none h-0 px-0"
         />
-      </div>
+      </div> */}
 
       {/* create new button */}
-      <div className="px-6 pt-4 xl:pt-6">
+      {/* <div className="px-6 pt-4 xl:pt-6">
         <Button
           variant="outline"
           className="w-full h-10 xl:h-12 text-xs xl:text-base text-[#5bbf9d] hover:bg-[#5bbf9d] tracking-[1px] flex items-center gap-2 bg-transparent border border-[#5bbf9d]"
         >
           Create new project <Plus />
         </Button>
-      </div>
+      </div> */}
 
       {/* Your Projects */}
       <div className="border-b border-[#1C2037] pb-4 2xl:pb-7 px-6 mt-5 2xl:mt-10">
@@ -175,16 +175,6 @@ const GenerateLeftSide = () => {
             />
           </Button>
         </div>
-      </div>
-
-      {/* create new button */}
-      <div className="px-6 pb-10">
-        <Button
-          variant="outline"
-          className="w-full h-10 xl:h-12 text-sm xl:text-base text-[#5bbf9d] hover:bg-[#5bbf9d] tracking-[1px] flex items-center gap-2 bg-transparent border border-[#5bbf9d]"
-        >
-          New version <Plus />
-        </Button>
       </div>
     </div>
   );

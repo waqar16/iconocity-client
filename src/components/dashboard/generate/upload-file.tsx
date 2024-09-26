@@ -54,8 +54,8 @@ const UploadFile = ({
         <div className="flex gap-4 justify-center text-xs text-[#BAC0DD] text-center mt-2">
           <span>PNG </span>
           <span>JPG </span>
-          <span>SVG </span>
-          <span> PDF</span>
+          {/* <span>SVG </span>
+          <span> PDF</span> */}
         </div>
       </div>
 

@@ -37,17 +37,11 @@ const GenerateRightSideBar = () => {
   };
 
   return (
-    <div className="h-full w-72 xl:w-80 2xl:w-96 bg-[#080e28] text-white rounded-tl-[24px] p-4 xl:p-5 overflow-y-auto hide-scrollbar">
+    <div className="h-[calc(100vh-74px)] w-72 xl:w-80 2xl:w-96 bg-[#080e28] text-white rounded-tl-[24px] p-4 xl:p-5 overflow-y-auto hide-scrollbar">
       {/* color picker tab */}
       <div className="bg-colorPicker-gradient border  border-[#1C2037] rounded-2xl p-3 xl:p-5">
         {/* color picker */}
         <ThemeColor setThemeColor={setThemeColor} themeColor={themeColor} />
-
-        {/* select style */}
-        <div className="flex items-center justify-between mt-7">
-          <h1 className="text-base text-[#BAC0DD] ">Select Style</h1>
-          <ChevronDown />
-        </div>
 
         {/* select style */}
         <div className="mt-5 xl:mt-7">
@@ -70,7 +64,7 @@ const GenerateRightSideBar = () => {
       <div className="bg-colorPicker-gradient border  border-[#1C2037] rounded-2xl py-4 mt-6">
         {/* title */}
         <div className="flex items-center justify-between px-6 pb-6">
-          <h1 className="text-base text-[#BAC0DD]">Upload references</h1>
+          <h1 className="text-base text-[#BAC0DD]">Upload Design</h1>
           <CircleHelp />
         </div>
 
@@ -110,7 +104,10 @@ const GenerateRightSideBar = () => {
         {urlList.length > 0 && (
           <div className="flex flex-col gap-3 bg-link-added-gradient border border-[#32344A] rounded-lg mt-4 mx-6  p-3">
             {urlList.map((link, index) => (
-              <div key={index} className="flex items-start justify-between">
+              <div
+                key={index}
+                className="flex items-start justify-between gap-3"
+              >
                 <a
                   href={link}
                   target="_blank"
@@ -138,9 +135,9 @@ const GenerateRightSideBar = () => {
         </Button>
       </div>
       {/* footer */}
-      <p className="lg:hidden xl:block text-sm text-[#BAC0DD] text-center mt-3">
+      {/* <p className="lg:hidden xl:block text-sm text-[#BAC0DD] text-center mt-3">
         You have available 8 credits
-      </p>
+      </p> */}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["www.pexels.com"], // Add the external hostname here
+    domains: ["cdn-icons-png.freepik.com"],
   },
 };
 

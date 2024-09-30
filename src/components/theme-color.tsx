@@ -1,9 +1,13 @@
-import { cn } from "@/lib/utils";
-import Image from "next/image";
 import React, { useState } from "react";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { SketchPicker } from "react-color";
+import { Button } from "./ui/button";
+import { Icons } from "./icons";
 
+// color theme array
 export const defaultColor = ["#F6515B", "#FECA3C", "#0886EC", "#fff"];
+
 const beautifulColors = [
   "#FF6633", // Coral
   "#FFB399", // Light Salmon
@@ -37,32 +41,56 @@ const beautifulColors = [
   "#6B8E23", // Olive Drab
 ];
 
+// icon style array
+interface IconData {
+  text: string;
+  icon: JSX.Element;
+  id: string;
+}
+
+const STAR_ICON: IconData[] = [
+  { icon: <Icons.OutlineStar />, text: "Outline", id: "outline" },
+  { icon: <Icons.FillStar />, text: "Fill", id: "fill" },
+  { icon: <Icons.LinerColorStar />, text: "Lineal color", id: "lineal-color" },
+  { icon: <Icons.HandDrownStar />, text: "Hand drown ", id: "hand-drawn" },
+];
+
 type ThemeColorProps = {
   themeColor: string;
   setThemeColor: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedIconStyle: React.Dispatch<React.SetStateAction<string>>;
+  selectedIconStyle: string;
 };
 
 const ThemeColor: React.FC<ThemeColorProps> = ({
   themeColor,
   setThemeColor,
+  setSelectedIconStyle,
+  selectedIconStyle,
 }) => {
   const [isColorPicker, setIsColorPicker] = useState(false);
 
+  // Icon Style
+  const handleIconStyle = (text: string) => {
+    setSelectedIconStyle(text);
+  };
+
   return (
-    <div>
+    <div className="bg-colorPicker-gradient border  border-[#1C2037] rounded-2xl p-3 xl:p-5">
       <h1 className="text-base text-[#BAC0DD] " style={{ color: themeColor }}>
         Select colors
       </h1>
+
+      {/* color picker */}
       <div className="flex justify-between mt-2 2xl:mt-3">
         {/* default color */}
         <div className="flex gap-2">
           {defaultColor.map((color, i) => (
             <div
               key={i}
-              //   bg={color}
               className={cn(
-                "w-6 2xl:w-8 h-6 2xl:h-8 bg-white  rounded-full cursor-pointer"
-                // `bg-[${color}]`
+                "w-6 2xl:w-8 h-6 2xl:h-8  rounded-full cursor-pointer",
+                themeColor === color ? "border border-white" : ""
               )}
               style={{
                 backgroundColor: color,
@@ -95,6 +123,28 @@ const ThemeColor: React.FC<ThemeColorProps> = ({
               />
             </div>
           )}
+        </div>
+      </div>
+
+      {/* select style */}
+      <div className="mt-5 xl:mt-7">
+        <h1 className="text-base text-[#BAC0DD]">Select shape</h1>
+        <div className="flex flex-wrap gap-3 mt-2">
+          {STAR_ICON.map(({ text, icon, id }, i) => (
+            <Button
+              key={i}
+              onClick={() => handleIconStyle(id)}
+              className={cn(
+                "flex gap-1 bg-[#1C223F] hover:bg-[#080e28] rounded-3xl px-3 2xl:px-4 py-2",
+                selectedIconStyle === id
+                  ? "bg-[#080e28] border border-white"
+                  : ""
+              )}
+            >
+              {icon}
+              <span className="text-xs 2xl:text-sm text-white">{text}</span>
+            </Button>
+          ))}
         </div>
       </div>
     </div>

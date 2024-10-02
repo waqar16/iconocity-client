@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+"use client";
+
+import React, { useContext, useState } from "react";
 import { Loader2 } from "lucide-react";
 import ThemeColor from "@/components/theme-color";
 import UploadFile from "./upload-file";
@@ -6,8 +8,14 @@ import { Button } from "@/components/ui/button";
 import { UseFigmaLink } from "@/hooks/mutation/useFigmaLink";
 import { UseUploadImage } from "@/hooks/mutation/useUploadImage";
 import AddFigmaLink from "./add-figma-link";
+import { cn } from "@/lib/utils";
+import { ProjectContext } from "@/context/ProjectProvider";
 
 const GenerateRightSideBar = () => {
+  // context
+  const { setSelectedProjectId } = useContext(ProjectContext);
+
+  // states
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [themeColor, setThemeColor] = useState("#F6515B");
   const [url, setUrl] = useState<string>("");
@@ -42,12 +50,20 @@ const GenerateRightSideBar = () => {
         formData.append("icon_color", themeColor || "#F6515B");
         formData.append("icon_style", selectedIconStyle);
 
-        await upLoadImageApi(formData);
+        await upLoadImageApi(formData, {
+          onSuccess(data) {
+            setSelectedProjectId(data.id);
+          },
+        });
       }
 
       //  add link API
       if (addedLink) {
-        await addLinkApi(linkPayload);
+        await addLinkApi(linkPayload, {
+          onSuccess(data) {
+            setSelectedProjectId(data.id);
+          },
+        });
       }
 
       setUploadedFile(null);
@@ -101,8 +117,15 @@ const GenerateRightSideBar = () => {
         <Button
           type="submit"
           onClick={onSubmit}
-          disabled={linkLoading || imageLoading}
-          className="flex gap-2 text-base w-full h-10 2xl:h-12 bg-generate-button-gradient"
+          disabled={
+            linkLoading || imageLoading || (!uploadedFile && !addedLink)
+          }
+          className={cn(
+            "flex gap-2 text-base w-full h-10 2xl:h-12 ",
+            linkLoading || imageLoading || (!uploadedFile && !addedLink)
+              ? "border border-[#04ADA3] bg-transparent cursor-not-allowed"
+              : "border-none bg-generate-button-gradient"
+          )}
         >
           {(linkLoading || imageLoading) && (
             <Loader2 className="w-4 h-4 animate-spin" />

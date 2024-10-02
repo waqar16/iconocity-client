@@ -1,69 +1,112 @@
-import { Icons } from "@/components/icons";
-import { ProjectContext } from "@/context/ProjectProvider";
-import { UseGetProjectIconList } from "@/hooks/query/useGetProjectIconList";
-import { ChevronRight } from "lucide-react";
-import Image from "next/image";
-import React, { useContext } from "react";
+"use client";
 
-const ICONS = [
-  "/generate/svg/Activity.svg",
-  "/generate/svg/Creative materials.svg",
-  "/generate/svg/Discovery.svg",
-  "/generate/svg/E-commerce.svg",
-  "/generate/svg/Entertainment.svg",
-  "/generate/svg/Loyalty system.svg",
-  "/generate/svg/Notification.svg",
-  "/generate/svg/Online education.svg",
-  "/generate/svg/Payments.svg",
-  "/generate/svg/Productivity.svg",
-  "/generate/svg/Projects Gallery.svg",
-  "/generate/svg/Report time.svg",
-  "/generate/svg/Security.svg",
-  "/generate/svg/Social media.svg",
-  "/generate/svg/Support.svg",
-  "/generate/svg/Winning team.svg",
-];
+import React, { useContext, useEffect, useState } from "react";
+import Image from "next/image";
+import { Icons } from "@/components/icons";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { ProjectContext } from "@/context/ProjectProvider";
+import { UseGetHistoryByHistoryId } from "@/hooks/query/useGetHistoryByHistoryId";
+import { ChevronLeft, ChevronRight, LoaderIcon } from "lucide-react";
+import Link from "next/link";
+import { baseURL } from "@/lib/axiosClient";
+import { cn } from "@/lib/utils";
 
 const GenerateSvg = () => {
+  const [pageNumber, setPageNumber] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const PAGE_SIZE = 16;
+
   // context
-  const { selectedProjectId } = useContext(ProjectContext);
+  const { selectedProjectHistoryId } = useContext(ProjectContext);
 
   //api
-  const { data } = UseGetProjectIconList(selectedProjectId);
+  const { data, isLoading } = UseGetHistoryByHistoryId({
+    history_id: selectedProjectHistoryId,
+    page_size: PAGE_SIZE,
+    page: pageNumber,
+  });
+
+  useEffect(() => {
+    if (data?.count) {
+      setTotalPages(Math.ceil(data?.count / PAGE_SIZE));
+    }
+  }, [data, PAGE_SIZE]);
+
+  // prev button
+  const handlePreviousBtn = () => {
+    if (pageNumber > 1) {
+      setPageNumber(pageNumber - 1);
+    }
+  };
+
+  // next  button
+  const handleNextBtn = () => {
+    if (pageNumber < totalPages) {
+      setPageNumber(pageNumber + 1);
+    }
+  };
 
   return (
     <div className="bg-[#0E142D] border border-[#1C2037] rounded-2xl px-8 py-5">
       {/* download tab */}
       <div className="flex items-center justify-between">
-        {/* right download icons */}
-        <div className="flex items-center gap-1.5">
+        <Link
+          href={`${baseURL}/app/downloadFreePik?history_id=${selectedProjectHistoryId}&page=${pageNumber}&page_size=${PAGE_SIZE}`}
+          className={cn(buttonVariants({ variant: "link" }), "h-0  px-0")}
+        >
           <Icons.Download />
-          <h3 className="text-white">Download SVG</h3>
-        </div>
+
+          <h3 className="text-white ml-1">Download SVG</h3>
+        </Link>
       </div>
+
       {/* icons show */}
-      <div className="w-[280px] xl:w-[500px] 3xl:w-[700px] mx-auto flex items-center justify-center bg-[#1C2038] rounded-lg py-4 3xl:py-7 mt-6">
-        <div className=" w-[250px] xl:w-[300px] 2xl:w-[400px] grid grid-cols-4 xl:grid-cols-4 gap-0 xl:gap-4 3xl:gap-6">
-          {data &&
-            data.map(({ url, id }) => (
-              <Image
-                key={id}
-                src={url}
-                width={300}
-                height={300}
-                alt="svg"
-                className="w-14 h-14"
-              />
-            ))}
-        </div>
+      <div className="w-[340px] xl:w-[500px] 3xl:w-[600px] min-h-[352px] mx-auto flex items-center justify-center bg-[#1C2038] rounded-lg py-5 xl:py-10 3xl:py-7 mt-6">
+        {isLoading ? (
+          <LoaderIcon className="text-white size-8 animate-spin" />
+        ) : !!data?.results.length ? (
+          <div className=" w-[310px] xl:w-[300px] 2xl:w-[400px]  grid grid-cols-4 xl:grid-cols-4 gap-4 xl:gap-4 3xl:gap-6">
+            {data?.results &&
+              data?.results.map(({ url, id }) => (
+                <Image
+                  key={id}
+                  src={url}
+                  width={300}
+                  height={300}
+                  alt="svg"
+                  className="w-14 h-14 mx-auto"
+                />
+              ))}
+          </div>
+        ) : (
+          <p className=" text-white mx-auto text-center">No SVGs found!</p>
+        )}
       </div>
+
       {/* pagination tab */}
       <div className="flex justify-end mt-5">
         <div className="flex items-center gap-4">
-          <p className="text-white">55 icons</p>
+          <p className="text-white">{data?.count} icons</p>
           <div className="flex items-center gap-2">
-            <span className="text-[#7C7F99] font-semibold">1 0f 3</span>
-            <ChevronRight className="text-white" />
+            <Button
+              onClick={handlePreviousBtn}
+              disabled={pageNumber === 1}
+              className="h-0 text-black bg-transparent hover:bg-transparent rounded  px-0"
+            >
+              <ChevronLeft className="text-white" />
+            </Button>
+            <span className="text-white">
+              <strong>
+                {pageNumber} of {totalPages}
+              </strong>
+            </span>
+            <Button
+              onClick={handleNextBtn}
+              disabled={pageNumber === totalPages}
+              className="h-0 text-white bg-transparent hover:bg-transparent rounded px-0 "
+            >
+              <ChevronRight className="text-white" />
+            </Button>
           </div>
         </div>
       </div>

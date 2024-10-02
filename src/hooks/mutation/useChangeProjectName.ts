@@ -2,21 +2,20 @@ import axiosClient from "@/lib/axiosClient";
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "sonner";
 
-const FigmaLinkApi = async ({ screen_link, icon_color, icon_style }: any) => {
-  const res = await axiosClient.post("app/figmaLink/", {
-    screen_link,
-    icon_color,
-    icon_style,
+const ChangeProjectNameApi = async ({ project_id, new_name }: any) => {
+  const res = await axiosClient.post("app/changeProjectName/", {
+    project_id,
+    new_name,
   });
   return res.data;
 };
 
-export const UseFigmaLink = () => {
+export const UseChangeProjectName = () => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: FigmaLinkApi,
+    mutationFn: ChangeProjectNameApi,
     onSuccess: (data) => {
-      toast.success(data.success || "Url has been processed Successfully!");
+      toast.success(data.success || "Update project name!");
       qc.invalidateQueries({ queryKey: ["get-project-list"] });
     },
     onError: (error: any) => {

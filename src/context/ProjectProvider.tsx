@@ -1,4 +1,5 @@
-import { UseGetProjectIconList } from "@/hooks/query/useGetProjectIconList";
+"use client";
+
 import React, {
   Dispatch,
   SetStateAction,
@@ -9,22 +10,34 @@ import React, {
 interface ProjectContextType {
   selectedProjectId: string | null;
   setSelectedProjectId: Dispatch<SetStateAction<string | null>>;
+  selectedProjectHistoryId: number | null;
+  setSelectedProjectHistoryId: Dispatch<SetStateAction<number | null>>;
 }
 
 // Create the context with default values
 export const ProjectContext = createContext<ProjectContextType>({
   selectedProjectId: null,
   setSelectedProjectId: () => {},
+  selectedProjectHistoryId: null,
+  setSelectedProjectHistoryId: () => {},
 });
 export const ProjectProvider = ({ children }: any) => {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
     null
   );
 
-  console.log(selectedProjectId, "hhhhhhhhhhh");
+  const [selectedProjectHistoryId, setSelectedProjectHistoryId] = useState<
+    number | null
+  >(null);
+
   return (
     <ProjectContext.Provider
-      value={{ selectedProjectId, setSelectedProjectId }}
+      value={{
+        selectedProjectId,
+        setSelectedProjectId,
+        selectedProjectHistoryId,
+        setSelectedProjectHistoryId,
+      }}
     >
       {children}
     </ProjectContext.Provider>

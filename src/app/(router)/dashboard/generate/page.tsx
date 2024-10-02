@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import ChatBot from "@/components/dashboard/generate/chat-bot";
 import GenerateLeftSide from "@/components/dashboard/generate/generate-left-side";
@@ -11,16 +9,12 @@ const GeneratePage = () => {
   return (
     <ProjectProvider>
       <div className="flex gap-5 h-full">
-        {/* LeftSideBar */}
         <GenerateLeftSide />
         {/* center*/}
         <div className="h-[calc(100vh-74px)] flex-1 overflow-y-auto hide-scrollbar pb-10">
-          {/* generate svg */}
           <GenerateSvg />
-          {/* Chat Bot Section */}
           <ChatBot />
         </div>
-        {/* RightSideBAr */}
         <GenerateRightSideBar />
       </div>
     </ProjectProvider>

@@ -51,8 +51,8 @@ interface IconData {
 const STAR_ICON: IconData[] = [
   { icon: <Icons.OutlineStar />, text: "Outline", id: "outline" },
   { icon: <Icons.FillStar />, text: "Fill", id: "fill" },
-  { icon: <Icons.LinerColorStar />, text: "Lineal color", id: "lineal-color" },
-  { icon: <Icons.HandDrownStar />, text: "Hand drown ", id: "hand-drawn" },
+  { icon: <Icons.LinerColorStar />, text: "Linear color", id: "lineal-color" },
+  { icon: <Icons.HandDrownStar />, text: "HandDrawn ", id: "hand-drawn" },
 ];
 
 type ThemeColorProps = {
@@ -77,9 +77,7 @@ const ThemeColor: React.FC<ThemeColorProps> = ({
 
   return (
     <div className="bg-colorPicker-gradient border  border-[#1C2037] rounded-2xl p-3 xl:p-5">
-      <h1 className="text-base text-[#BAC0DD] " style={{ color: themeColor }}>
-        Select colors
-      </h1>
+      <h1 className="text-base text-[#BAC0DD] ">Select colors</h1>
 
       {/* color picker */}
       <div className="flex justify-between mt-2 2xl:mt-3">
@@ -138,7 +136,7 @@ const ThemeColor: React.FC<ThemeColorProps> = ({
                 "flex gap-1 bg-[#1C223F] hover:bg-[#080e28] rounded-3xl px-3 2xl:px-4 py-2",
                 selectedIconStyle === id
                   ? "bg-[#080e28] border border-white"
-                  : ""
+                  : "border border-transparent"
               )}
             >
               {icon}

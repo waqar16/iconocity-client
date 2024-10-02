@@ -81,7 +81,7 @@ const ProjectList = () => {
               <div
                 onClick={() => setSelectedProjectId(id)}
                 className={cn(
-                  "flex items-center gap-5 justify-between rounded-md cursor-pointer hover:bg-[#22263e] cursor-pointer pl-11 pr-5 py-3 ",
+                  "flex items-center gap-5 justify-between rounded-md hover:bg-[#22263e] cursor-pointer pl-11 pr-5 py-3 ",
                   selectedProjectId === id ? "bg-[#22263e]" : "bg-transparent"
                 )}
               >
@@ -92,7 +92,7 @@ const ProjectList = () => {
                   className={cn(
                     "h-0 text-sm bg-transparent   px-0",
                     isEditing === id
-                      ? "border border-white py-4 px-2"
+                      ? "border border-white py-4 cursor-pointer px-2"
                       : " border-none"
                   )}
                   readOnly={isEditing !== id}
@@ -129,7 +129,7 @@ const ProjectList = () => {
 
       {/* see mor button */}
       {!isLoading && data && data?.length > 3 && (
-        <div className="flex justify-center ">
+        <div className="flex justify-center">
           <Button
             onClick={handleShowMoreProjects}
             className="flex gap-3 text-white bg-transparent hover:bg-[#22263e] 2xl:mt-2"

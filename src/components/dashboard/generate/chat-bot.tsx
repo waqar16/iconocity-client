@@ -156,7 +156,7 @@ const ChatBot = () => {
         </div>
       )}
       {/* input field */}
-      <div className="flex items-center bg-[#1C2038] border border-[#2D3033] rounded-lg mt-4 py-2 pl-3 pr-3">
+      <div className="flex items-center bg-[#1C2038] border border-[#2D3033] focus-within:border-white rounded-lg mt-4 py-2 pl-3 pr-3">
         <Input
           type="text"
           value={inputMessage}

@@ -56,7 +56,7 @@ const GenerateSvg = () => {
         >
           <Icons.Download />
 
-          <h3 className="text-white ml-1">Download SVG</h3>
+          <h3 className="text-white ml-1">Download PNG</h3>
         </Link>
       </div>
 

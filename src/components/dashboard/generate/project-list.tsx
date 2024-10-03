@@ -81,7 +81,7 @@ const ProjectList = () => {
               <div
                 onClick={() => setSelectedProjectId(id)}
                 className={cn(
-                  "flex items-center gap-5 justify-between rounded-md hover:bg-[#22263e] cursor-pointer pl-11 pr-5 py-3 ",
+                  "flex items-center gap-5 justify-between rounded-md hover:bg-[#22263e] cursor-pointer pl-14 pr-5 py-3 ",
                   selectedProjectId === id ? "bg-[#22263e]" : "bg-transparent"
                 )}
               >
@@ -90,7 +90,7 @@ const ProjectList = () => {
                   value={isEditing === id ? updatedProjectName || "" : name}
                   onChange={(e) => setUpdatedProjectName(e.target.value)}
                   className={cn(
-                    "h-0 text-sm bg-transparent   px-0",
+                    "h-0 text-base bg-transparent   px-0",
                     isEditing === id
                       ? "border border-white py-4 cursor-pointer px-2"
                       : " border-none"

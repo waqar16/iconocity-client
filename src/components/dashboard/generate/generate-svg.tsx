@@ -79,7 +79,7 @@ const GenerateSvg = () => {
               ))}
           </div>
         ) : (
-          <p className=" text-white mx-auto text-center">No SVGs found!</p>
+          <p className=" text-white mx-auto text-center">No Icons found!</p>
         )}
       </div>
 

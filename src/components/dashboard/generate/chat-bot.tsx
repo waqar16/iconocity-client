@@ -151,7 +151,7 @@ const ChatBot = () => {
         <div className="h-[300px] flex items-center justify-center">
           <div className="flex flex-col items-center justify-center gap-4 text-white">
             <Icons.message />
-            <p className="text-xs">New Notebook will appear Here.</p>
+            <p className="text-xs">Type your icon design requests here</p>
           </div>
         </div>
       )}
@@ -191,7 +191,7 @@ const ChatBot = () => {
 
       {/* footer */}
       <p className="text-xs text-[#BAC0DD] text-center font-light mt-3">
-        Iconicity can make mistakes. Specify the information
+        Iconocity can make mistakes. Be specific in your requests.
       </p>
     </div>
   );

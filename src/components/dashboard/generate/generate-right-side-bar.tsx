@@ -17,10 +17,12 @@ const GenerateRightSideBar = () => {
 
   // states
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [themeColor, setThemeColor] = useState("#F6515B");
+  const [themeColor, setThemeColor] = useState<string | undefined>();
   const [url, setUrl] = useState<string>("");
   const [addedLink, setAddedLink] = useState<string | null>(null);
-  const [selectedIconStyle, setSelectedIconStyle] = useState<string>("outline");
+  const [selectedIconStyle, setSelectedIconStyle] = useState<
+    string | undefined
+  >();
 
   //file
   const handleFileUpload = (file: File) => {
@@ -37,22 +39,36 @@ const GenerateRightSideBar = () => {
   // submit
   const onSubmit = async () => {
     try {
-      const linkPayload = {
+      const linkPayload: {
+        screen_link: string | null;
+        icon_color?: string;
+        icon_style?: string;
+      } = {
         screen_link: addedLink,
-        icon_color: themeColor || "#F6515B",
-        icon_style: selectedIconStyle,
       };
+      if (themeColor) {
+        linkPayload["icon_color"] = themeColor;
+      }
+      if (selectedIconStyle) {
+        linkPayload["icon_style"] = selectedIconStyle;
+      }
 
       //     image upload api
       if (uploadedFile) {
         const formData = new FormData();
         formData.append("image", uploadedFile);
-        formData.append("icon_color", themeColor || "#F6515B");
-        formData.append("icon_style", selectedIconStyle);
+        if (themeColor) {
+          formData.append("icon_color", themeColor);
+        }
+        if (selectedIconStyle) {
+          formData.append("icon_style", selectedIconStyle);
+        }
 
         await upLoadImageApi(formData, {
           onSuccess(data) {
             setSelectedProjectId(data.id);
+            setThemeColor("");
+            setSelectedIconStyle("");
           },
         });
       }
@@ -62,6 +78,8 @@ const GenerateRightSideBar = () => {
         await addLinkApi(linkPayload, {
           onSuccess(data) {
             setSelectedProjectId(data.id);
+            setThemeColor("");
+            setSelectedIconStyle("");
           },
         });
       }

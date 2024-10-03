@@ -56,10 +56,12 @@ const STAR_ICON: IconData[] = [
 ];
 
 type ThemeColorProps = {
-  themeColor: string;
-  setThemeColor: React.Dispatch<React.SetStateAction<string>>;
-  setSelectedIconStyle: React.Dispatch<React.SetStateAction<string>>;
-  selectedIconStyle: string;
+  themeColor: string | undefined;
+  setThemeColor: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setSelectedIconStyle: React.Dispatch<
+    React.SetStateAction<string | undefined>
+  >;
+  selectedIconStyle: string | undefined;
 };
 
 const ThemeColor: React.FC<ThemeColorProps> = ({

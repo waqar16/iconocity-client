@@ -20,13 +20,13 @@ export default function DashboardLayout({
         <main className="h-full min-h-[calc(100vh-74px)]">{children}</main>
       </div>
 
-      {/* <div className="lg:hidden bg-[#161b37] flex flex-col justify-center items-center h-screen px-10">
+      <div className="lg:hidden bg-[#161b37] flex flex-col justify-center items-center h-screen px-10">
         <p className="text-3xl font-bold text-red-600 mb-4">Desktop Only!</p>
         <p className="text-xs sm:text-sm md:text-base text-white text-center leading-5">
           This application is optimized for desktop use. Please switch to a
           desktop device for the best experience.
         </p>
-      </div> */}
+      </div>
     </>
   );
 }

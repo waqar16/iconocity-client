@@ -79,6 +79,7 @@ const ProjectList = () => {
           {data &&
             data?.map(({ id, name }) => (
               <div
+                key={id}
                 onClick={() => setSelectedProjectId(id)}
                 className={cn(
                   "flex items-center gap-5 justify-between rounded-md hover:bg-[#22263e] cursor-pointer pl-14 pr-5 py-3 ",
@@ -86,7 +87,6 @@ const ProjectList = () => {
                 )}
               >
                 <Input
-                  key={id}
                   value={isEditing === id ? updatedProjectName || "" : name}
                   onChange={(e) => setUpdatedProjectName(e.target.value)}
                   className={cn(

@@ -90,12 +90,12 @@ const ThemeColor: React.FC<ThemeColorProps> = ({
               key={i}
               className={cn(
                 "w-6 2xl:w-8 h-6 2xl:h-8  rounded-full cursor-pointer",
-                themeColor === color ? "border border-white" : ""
+                themeColor === color ? "border-2 border-white scale-110" : ""
               )}
               style={{
                 backgroundColor: color,
               }}
-              onClick={() => setThemeColor(color)}
+              onClick={() => setThemeColor(color)} 
             />
           ))}
         </div>

@@ -18,10 +18,8 @@ const SettingDropMenu = () => {
   };
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
-        <Button className="bg-transparent hover:bg-transparent  border-none px-0 ">
-          <ChevronDown className="text-white hover:scale-125" />
-        </Button>
+      <DropdownMenuTrigger className="focus-visible:outline-none">
+        <ChevronDown className="text-white hover:scale-125" />
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
@@ -29,7 +27,7 @@ const SettingDropMenu = () => {
       >
         <DropdownMenuItem
           onClick={handleLogout}
-          className=" text-white bg-transparent hover:bg-[#11172f] px-2 py-2"
+          className=" text-white bg-transparent hover:bg-[#11172f] focus:bg-[#11172f] focus:text-white px-2 py-2"
         >
           Logout
         </DropdownMenuItem>

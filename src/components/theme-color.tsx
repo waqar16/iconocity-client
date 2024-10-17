@@ -6,7 +6,21 @@ import { Button } from "./ui/button";
 import { Icons } from "./icons";
 
 // color theme array
-export const defaultColor = ["#F6515B", "#FECA3C", "#0886EC", "#fff"];
+export const defaultColor = [
+  "#000",
+  "#0000FF",
+  "#7FFF00",
+  "#00FFFF",
+  "#808080",
+  "#008000",
+  "#FFA500",
+  "#FF0000",
+  "#FF007F",
+  "#00FF7F",
+  "#EE82EE",
+  "#ffffff",
+  "#FFFF00",
+];
 
 const beautifulColors = [
   "#000",
@@ -67,7 +81,7 @@ const ThemeColor: React.FC<ThemeColorProps> = ({
       {/* color picker */}
       <div className="flex justify-between mt-2 2xl:mt-3">
         {/* default color */}
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {defaultColor.map((color, i) => (
             <div
               key={i}
@@ -83,7 +97,7 @@ const ThemeColor: React.FC<ThemeColorProps> = ({
           ))}
         </div>
         {/* color picker*/}
-        <div className="relative flex items-center gap-2">
+        {/* <div className="relative flex items-center gap-2">
           <span className="text-xs text-white font-medium">Open editor</span>
           <Image
             src={"/generate/palette.webp"}
@@ -94,7 +108,6 @@ const ThemeColor: React.FC<ThemeColorProps> = ({
             onClick={() => setIsColorPicker(!isColorPicker)}
           />
 
-          {/* absolute SketchPicker color */}
           {isColorPicker && (
             <div className="absolute top-10 right-0">
               <SketchPicker
@@ -106,7 +119,7 @@ const ThemeColor: React.FC<ThemeColorProps> = ({
               />
             </div>
           )}
-        </div>
+        </div> */}
       </div>
 
       {/* select style */}

@@ -94,7 +94,7 @@ const ChatBot = () => {
                 ...prevMessages.slice(0, -1),
                 {
                   ...lastMessage,
-                  content: "An error occurred. Please try again.",
+                  content: "Please upload your design first.",
                 },
               ];
             }

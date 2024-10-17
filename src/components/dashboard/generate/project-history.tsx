@@ -1,14 +1,24 @@
 "use client";
 
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { ChevronDown, Clock4, LoaderIcon, Plus } from "lucide-react";
+import Cookies from "js-cookie";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
+import { ChevronDown, Clock4, LoaderIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProjectContext } from "@/context/ProjectProvider";
 import { UseGetProjectHistoryList } from "@/hooks/query/useGetProjectHistoryList";
-import { cn } from "@/lib/utils";
 
 const ProjectHistory = () => {
+  //get profile pic
+  const [profileImage, setProfileImage] = useState<string>("");
+
+  useEffect(() => {
+    const image = Cookies.get("profile_image") || "/profile.svg";
+
+    setProfileImage(image);
+  }, []);
+
   // context
   const {
     selectedProjectId,
@@ -83,7 +93,7 @@ const ProjectHistory = () => {
                   </h1>
                   <div className="flex gap-2 mt-2">
                     <Image
-                      src={"/generate/profile4.png"}
+                      src={profileImage || "/profile.svg"}
                       width={40}
                       height={40}
                       alt="profile"

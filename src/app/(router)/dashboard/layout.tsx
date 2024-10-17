@@ -2,8 +2,8 @@ import DashboardHeader from "@/components/dashboard/dashboard-header";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: " Dashboard",
-  //   description: "Vinecalc dashboard",
+  title: "Iconocity dashboard",
+  description: "Iconocity dashboard",
 };
 
 export default function DashboardLayout({
@@ -13,6 +13,7 @@ export default function DashboardLayout({
 }>) {
   return (
     <>
+      {/* desktop show */}
       <div className="hidden  lg:block bg-[#161b37] w-full min-h-screen">
         {/* left side */}
         <DashboardHeader />
@@ -20,6 +21,7 @@ export default function DashboardLayout({
         <main className="h-full min-h-[calc(100vh-74px)]">{children}</main>
       </div>
 
+      {/* mobile show */}
       <div className="lg:hidden bg-[#161b37] flex flex-col justify-center items-center h-screen px-10">
         <p className="text-3xl font-bold text-red-600 mb-4">Desktop Only!</p>
         <p className="text-xs sm:text-sm md:text-base text-white text-center leading-5">

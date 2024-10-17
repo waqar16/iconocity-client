@@ -105,7 +105,7 @@ const ChatBot = () => {
     );
   };
 
-  // clear chat funtion
+  // clear chat function
   const clearMessages = useCallback(() => {
     setMessages([]);
   }, []);
@@ -119,7 +119,7 @@ const ChatBot = () => {
           ref={containerRef}
         >
           {messages.map((msg) => (
-            <div key={msg.id} className="w-[70%] flex gap-5 ">
+            <div key={msg.id} className="w-[90%] flex gap-5 ">
               {/* profile img */}
               <Image
                 src={
@@ -139,7 +139,7 @@ const ChatBot = () => {
                 {isLoading && !msg.isUser && !msg.content ? (
                   <div className="ml-1.5 dot-falling mt-2" />
                 ) : (
-                  <p className="text-sm text-[#BAC0DD] font-light">
+                  <p className="text-sm text-[#BAC0DD] leading-6 font-light">
                     {msg.content}
                   </p>
                 )}

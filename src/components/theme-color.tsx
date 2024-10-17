@@ -9,36 +9,19 @@ import { Icons } from "./icons";
 export const defaultColor = ["#F6515B", "#FECA3C", "#0886EC", "#fff"];
 
 const beautifulColors = [
-  "#FF6633", // Coral
-  "#FFB399", // Light Salmon
-  "#FF33FF", // Pink
-  "#FFAA00", // Orange
-  "#99FF99", // Light Green
-  "#66B2FF", // Sky Blue
-  "#AA00AA", // Purple
-  "#FF33CC", // Fuchsia
-  "#99E6E6", // Light Blue
-  "#6680B3", // Steel Blue
-  "#FF0000", // Red
-  "#FFD700", // Gold
-  "#FF9933", // Deep Saffron
-  "#FF8C00", // Dark Orange
-  "#FFFF66", // Yellow
-  "#008000", // Green
-  "#0000FF", // Blue
-  "#800080", // Purple
-  "#808080", // Gray
-  "#FFFFFF", // White
-  "#000000", // Black
-  "#FF1493", // Deep Pink
-  "#9370DB", // Medium Purple
-  "#8A2BE2", // Blue Violet
-  "#A52A2A", // Brown
-  "#1E90FF", // Dodger Blue
-  "#7FFF00", // Chartreuse
-  "#20B2AA", // Light Sea Green
-  "#32CD32", // Lime Green
-  "#6B8E23", // Olive Drab
+  "#000",
+  "#0000FF",
+  "#7FFF00",
+  "#00FFFF",
+  "#808080",
+  "#008000",
+  "#FFA500",
+  "#FF0000",
+  "#FF007F",
+  "#00FF7F",
+  "#EE82EE",
+  "#ffffff",
+  "#FFFF00",
 ];
 
 // icon style array
@@ -95,7 +78,7 @@ const ThemeColor: React.FC<ThemeColorProps> = ({
               style={{
                 backgroundColor: color,
               }}
-              onClick={() => setThemeColor(color)} 
+              onClick={() => setThemeColor(color)}
             />
           ))}
         </div>

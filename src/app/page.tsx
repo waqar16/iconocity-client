@@ -1,10 +1,8 @@
-import Image from "next/image";
-import { redirect } from "next/navigation";
+import React from "react";
 
 export default function Home() {
-  redirect("/dashboard/generate");
   return (
-    <main className="text-4xl flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="text-4xl flex min-h-screen flex-col items-center gap-10 p-24">
       Landing Page
     </main>
   );

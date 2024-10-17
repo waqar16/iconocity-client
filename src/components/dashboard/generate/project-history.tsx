@@ -50,7 +50,7 @@ const ProjectHistory = () => {
           <Clock4 className="w-4 h-auto" />
           History
         </h2>
-        <Plus className="w-5 h-auto" />
+        {/* <Plus className="w-5 h-auto" /> */}
       </div>
 
       {/* user info */}

@@ -1,14 +1,12 @@
+"use client";
+
 import { cn } from "@/lib/utils";
-import {
-  ChevronDown,
-  LayoutDashboard,
-  Settings,
-  Star,
-  User,
-} from "lucide-react";
+import { LayoutDashboard, Settings, Star, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import SettingDropMenu from "./setting-drop-menu";
+import Cookies from "js-cookie";
 
 const TABS = [
   {
@@ -44,6 +42,20 @@ const TABS = [
 ];
 
 const DashboardHeader = () => {
+  const [userName, setUserName] = useState<string>("");
+  const [userEmail, setUserEmail] = useState<string>("");
+  const [profileImage, setProfileImage] = useState<string>("");
+
+  useEffect(() => {
+    const name = Cookies.get("full_name") || "Guest";
+    const email = Cookies.get("email") || "guest@example.com";
+    const image = Cookies.get("profile_image") || "/profile.svg";
+
+    setUserName(name);
+    setUserEmail(email);
+    setProfileImage(image);
+  }, []);
+
   return (
     <div className="flex  items-center  justify-between text-black py-4 px-10">
       {/* logo */}
@@ -72,19 +84,17 @@ const DashboardHeader = () => {
       <div className="flex items-center gap-3">
         <div className="text-white">
           {/* name */}
-          <h3 className="text-xs 2xl:text-sm font-bold text-end">
-            Tomas Baker
-          </h3>
-          <p className="text-xs 2xl:text-sm">baker@tomas.com</p>
+          <h3 className="text-xs 2xl:text-sm font-bold text-end">{userName}</h3>
+          <p className="text-xs 2xl:text-sm">{userEmail}</p>
         </div>
         <Image
-          src={"/generate/profile3.png"}
+          src={profileImage || "/profile.svg"}
           width={130}
           height={130}
           alt="logo"
           className="w-8 h-8 3xl:w-10 3xl:h-10 rounded-full object-cover"
         />
-        <ChevronDown className="text-white" />
+        <SettingDropMenu />
       </div>
     </div>
   );

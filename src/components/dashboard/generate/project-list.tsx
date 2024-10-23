@@ -124,7 +124,8 @@ const ProjectList = () => {
             ))}
         </div>
       ) : (
-        <p className=" text-center py-10">No Project !</p>
+        ""
+        // <p className=" text-center py-10">No Project !</p>
       )}
 
       {/* see mor button */}

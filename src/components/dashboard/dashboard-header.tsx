@@ -10,7 +10,7 @@ const DashboardHeader = () => {
       <Image src={"/logo.png"} width={130} height={130} alt="logo" />
 
       {/* Nav List */}
-      <NavList />
+      {/* <NavList /> */}
 
       {/* profile info */}
       <div className="flex items-center gap-3">

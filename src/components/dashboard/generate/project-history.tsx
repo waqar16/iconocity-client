@@ -105,7 +105,8 @@ const ProjectHistory = () => {
               ))}
         </div>
       ) : (
-        <p className=" text-center py-10">No Project history !</p>
+        ""
+        // <p className=" text-center py-10">No Project history !</p>
       )}
 
       {/* see mor button */}

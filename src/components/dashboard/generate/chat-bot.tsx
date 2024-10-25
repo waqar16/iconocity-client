@@ -79,7 +79,7 @@ const ChatBot = () => {
                 ...prevMessages.slice(0, -1),
                 {
                   ...lastMessage,
-                  content: response,
+                  content: response.query_response,
                 },
               ];
             }

@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-export const baseURL = "http://192.168.1.17:8007";
+export const baseURL = "https://app.iconocity.com/api/"  
 // export const baseURL = "http://3.233.197.138/api/";
 
 const axiosClient = axios.create({

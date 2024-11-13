@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { toast } from "sonner";
 
 const FigmaLinkApi = async ({ screen_link, icon_color, icon_style }: any) => {
-  const res = await axiosClient.post("app/figmaLink/", {
+  const res = await axiosClient.post("app/imageLink/", {
     screen_link,
     icon_color,
     icon_style,

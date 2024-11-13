@@ -21,7 +21,7 @@ export interface IMessage {
   isUser: boolean;
 }
 
-const ChatBot = () => {
+const ChatBot = ({keywords}) => {
   // context
   const { selectedProjectId } = useContext(ProjectContext);
 
@@ -109,13 +109,38 @@ const ChatBot = () => {
   const clearMessages = useCallback(() => {
     setMessages([]);
   }, []);
-
+  useEffect(() => {
+    setInputMessage(keywords.join(", "));
+  }, [keywords]);
   return (
     <div className="relative bg-chatbot-gradient border border-[#1C2037] rounded-2xl px-8 py-5 mt-5">
+            {/* input field */}
+      <div className="flex items-center bg-[#1C2038] border border-[#2D3033] focus-within:border-white rounded-lg mt-4 py-2 pl-3 pr-3">
+        <Input
+          type="text"
+          value={inputMessage}
+          onChange={(e) => setInputMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !isLoading) {
+              handleMessageSubmit(e);
+            }
+          }}
+          placeholder="Type your request"
+          className="text-white placeholder:text-[#7C7F99] flex-1 bg-transparent border-none"
+        />
+        <Button
+          type="submit"
+          onClick={handleMessageSubmit}
+          disabled={isLoading}
+          className="bg-transparent border border-white px-3"
+        >
+          <Send className="w-5 h-auto text-[#BAC0DD]" />
+        </Button>
+      </div>
       {/* messages */}
       {messages.length > 0 ? (
         <div
-          className="h-[300px] space-y-5  overflow-y-auto custom-scrollbar"
+          className="h-[300px] space-y-5 mt-9  overflow-y-auto custom-scrollbar"
           ref={containerRef}
         >
           {messages.map((msg) => (
@@ -155,34 +180,12 @@ const ChatBot = () => {
           </div>
         </div>
       )}
-      {/* input field */}
-      <div className="flex items-center bg-[#1C2038] border border-[#2D3033] focus-within:border-white rounded-lg mt-4 py-2 pl-3 pr-3">
-        <Input
-          type="text"
-          value={inputMessage}
-          onChange={(e) => setInputMessage(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !isLoading) {
-              handleMessageSubmit(e);
-            }
-          }}
-          placeholder="Type your request"
-          className="text-white placeholder:text-[#7C7F99] flex-1 bg-transparent border-none"
-        />
-        <Button
-          type="submit"
-          onClick={handleMessageSubmit}
-          disabled={isLoading}
-          className="bg-transparent border border-white px-3"
-        >
-          <Send className="w-5 h-auto text-[#BAC0DD]" />
-        </Button>
-      </div>
+
 
       {/* clear chat button */}
       {messages.length > 0 && (
         <p
-          className="absolute top-5 right-7 text-white hover:text-blue-500 font-normal text-xs underline cursor-pointer"
+          className="absolute top-3 right-7 text-white hover:text-blue-500 font-normal text-xs underline cursor-pointer"
           onClick={() => clearMessages()}
         >
           Clear Chat

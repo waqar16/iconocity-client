@@ -51,7 +51,7 @@ const ProjectHistory = () => {
       setSelectedProjectHistoryId(data[0].history_id);
     }
   }, [isSuccess, data]);
-  console.log(data);
+   
   return (
     <div className=" pb-7 px-6 mt-5 2xl:mt-10">
       {/* title */}

@@ -11,7 +11,7 @@ import AddFigmaLink from "./add-figma-link";
 import { cn } from "@/lib/utils";
 import { ProjectContext } from "@/context/ProjectProvider";
 
-const GenerateRightSideBar = () => {
+const GenerateRightSideBar = ({setKeywords}) => {
   // context
   const { setSelectedProjectId } = useContext(ProjectContext);
 
@@ -34,8 +34,7 @@ const GenerateRightSideBar = () => {
 
   // image api
   const { mutateAsync: upLoadImageApi, isLoading: imageLoading } =
-    UseUploadImage();
-
+    UseUploadImage();  
   // submit
   const onSubmit = async () => {
     try {
@@ -64,24 +63,35 @@ const GenerateRightSideBar = () => {
           formData.append("icon_style", selectedIconStyle);
         }
 
-        await upLoadImageApi(formData, {
+       const data2 = await upLoadImageApi(formData, {
           onSuccess(data) {
             setSelectedProjectId(data.id);
             setThemeColor("");
             setSelectedIconStyle("");
           },
-        });
-      }
+        }
+      );
+      setKeywords(data2?.attributes?.keywords.slice(1,4))
+      console.log("data2?.attributes?.keywords.slice(1,4)",data2?.attributes?.keywords.slice(1,4)) 
 
+      localStorage.setItem("keywords", JSON.stringify(data2?.attributes?.keywords.slice(1,4)))
+      
+      }
+      
       //  add link API
       if (addedLink) {
-        await addLinkApi(linkPayload, {
+        const link_api = await addLinkApi(linkPayload, {
           onSuccess(data) {
             setSelectedProjectId(data.id);
             setThemeColor("");
             setSelectedIconStyle("");
           },
         });
+        setKeywords(link_api?.attributes?.keywords.slice(1,4))
+      console.log("data2?.attributes?.keywords.slice(1,4)",link_api?.attributes?.keywords.slice(1,4)) 
+      const cleanedKeywords = link_api?.attributes?.keywords.slice(1, 4).map(keyword => keyword.replace(/['"]+/g, '').trim());
+
+      localStorage.setItem("keywords", JSON.stringify(cleanedKeywords));
       }
 
       setUploadedFile(null);
@@ -90,7 +100,7 @@ const GenerateRightSideBar = () => {
       console.error(error);
     }
   };
-
+  
   return (
     <div className="h-[calc(100vh-74px)] w-72 xl:w-80 2xl:w-96 bg-[#080e28] text-white rounded-tl-[24px] p-4 xl:p-5 overflow-y-auto hide-scrollbar">
       {/* color picker tab and select style */}

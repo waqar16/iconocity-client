@@ -7,7 +7,7 @@ import { ProjectProvider } from "@/context/ProjectProvider";
 import GenerateSvg from "@/components/dashboard/generate/generate-svg";
 
 const GeneratePage = () => {
-  const [keywords, setKeywords] = React.useState<string[]>(JSON.parse(localStorage.getItem('keywords') || '[]'));
+  const [keywords, setKeywords] = React.useState<string[]>(JSON.parse(localStorage.getItem('#keywords') || '[]'));
   return (
     <ProjectProvider>
       <div className="flex gap-5 h-full">

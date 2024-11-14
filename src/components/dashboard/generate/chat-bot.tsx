@@ -20,8 +20,11 @@ export interface IMessage {
   content: string;
   isUser: boolean;
 }
+interface ChatBotProps {
+  keywords: string[];
+}
 
-const ChatBot = ({keywords}) => {
+const ChatBot:React.FC<ChatBotProps> = ({keywords}) => {
   // context
   const { selectedProjectId } = useContext(ProjectContext);
 

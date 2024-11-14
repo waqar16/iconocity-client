@@ -10,8 +10,10 @@ import { UseUploadImage } from "@/hooks/mutation/useUploadImage";
 import AddFigmaLink from "./add-figma-link";
 import { cn } from "@/lib/utils";
 import { ProjectContext } from "@/context/ProjectProvider";
-
-const GenerateRightSideBar = ({setKeywords}) => {
+interface GenerateRightSideBarProps {
+  setKeywords: React.Dispatch<React.SetStateAction<string[]>>;
+}
+const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setKeywords}) => {
   // context
   const { setSelectedProjectId } = useContext(ProjectContext);
 
@@ -89,7 +91,7 @@ const GenerateRightSideBar = ({setKeywords}) => {
         });
         setKeywords(link_api?.attributes?.keywords.slice(1,4))
       console.log("data2?.attributes?.keywords.slice(1,4)",link_api?.attributes?.keywords.slice(1,4)) 
-      const cleanedKeywords = link_api?.attributes?.keywords.slice(1, 4).map(keyword => keyword.replace(/['"]+/g, '').trim());
+      const cleanedKeywords = link_api?.attributes?.keywords.slice(1, 4).map((keyword: string) => keyword.replace(/['"]+/g, '').trim());
 
       localStorage.setItem("keywords", JSON.stringify(cleanedKeywords));
       }

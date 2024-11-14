@@ -9,11 +9,18 @@ import Link from "next/link";
 import { baseURL } from "@/lib/axiosClient";
 import { cn } from "@/lib/utils";
 import { UseFetchIconById } from "@/hooks/mutation/useSimilarIconByFamily";
+type ProjectSvg = {
+  id: number;
+  url: string;
+};
 
 const GenerateSvg = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [visibleIcons, setVisibleIcons] = useState([]); // State to manage displayed icons
+
+  // Explicitly type the state to ProjectSvg[]
+  const [visibleIcons, setVisibleIcons] = useState<ProjectSvg[] >([]); // State to manage displayed icons
+
   const [isShowingSimilarIcons, setIsShowingSimilarIcons] = useState(false); // State to track icon source
   const PAGE_SIZE = 20;
 
@@ -25,12 +32,17 @@ const GenerateSvg = () => {
     page: pageNumber,
   });
 
-  const result = data?.results;
+  const result: ProjectSvg[] = data?.results?.map((icon: any) => ({
+    id: Number(icon.id),  // Ensure the id is a number
+    url: icon.url,
+  })) ?? [];  
 
   useEffect(() => {
     if (data?.count) {
       setTotalPages(Math.ceil(data?.count / PAGE_SIZE));
-      setVisibleIcons(result); // Set default icons on data load
+      if (result) {
+        setVisibleIcons(result);
+      }
     }
   }, [data, PAGE_SIZE]);
 
@@ -38,7 +50,7 @@ const GenerateSvg = () => {
   const { mutate: fetchIconById, isLoading: isFetching, data: similarIconData } = UseFetchIconById();
 
   // Handle search for similar icon
-  const handleSearchForSimilarIcon = (id) => {
+  const handleSearchForSimilarIcon = (id: number) => {
     fetchIconById(id);
     setIsShowingSimilarIcons(true); // Set flag to true when similar icons are displayed
   };

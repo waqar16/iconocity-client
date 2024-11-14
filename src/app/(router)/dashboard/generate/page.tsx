@@ -7,7 +7,14 @@ import { ProjectProvider } from "@/context/ProjectProvider";
 import GenerateSvg from "@/components/dashboard/generate/generate-svg";
 
 const GeneratePage = () => {
-  const [keywords, setKeywords] = React.useState<string[]>(JSON.parse(localStorage.getItem('#keywords') || '[]'));
+  const [keywords, setKeywords] = React.useState<string[]>([])
+  React.useEffect(() => {
+    // This code will only run on the client side
+    const savedKeywords = localStorage.getItem('#keywords');
+    if (savedKeywords) {
+      setKeywords(JSON.parse(savedKeywords));
+    }
+  }, []);
   return (
     <ProjectProvider>
       <div className="flex gap-5 h-full">

@@ -9,21 +9,27 @@ import Link from "next/link";
 import { baseURL } from "@/lib/axiosClient";
 import { cn } from "@/lib/utils";
 import { UseFetchIconById } from "@/hooks/mutation/useSimilarIconByFamily";
+import axios from "axios";
 type ProjectSvg = {
   id: number;
   url: string;
 };
 
+
 const GenerateSvg = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [loading, setLoading] = useState(false);
 
-  // Explicitly type the state to ProjectSvg[]
-  const [visibleIcons, setVisibleIcons] = useState<ProjectSvg[] >([]); // State to manage displayed icons
+  const [similarPageNumber, setSimilarPageNumber] = useState(1);
+  const [totalSimilarPages, setTotalSimilarPages] = useState(0);
 
-  const [isShowingSimilarIcons, setIsShowingSimilarIcons] = useState(false); // State to track icon source
+  const [visibleIcons, setVisibleIcons] = useState<ProjectSvg[]>([]); // State for regular icons
+  const [visibleSimilarIcons, setVisibleSimilarIcons] = useState<ProjectSvg[]>([]); // State for similar icons
+
+  const [isShowingSimilarIcons, setIsShowingSimilarIcons] = useState(false); // Track if showing similar icons
+
   const PAGE_SIZE = 20;
-
   const { selectedProjectHistoryId } = useContext(ProjectContext);
 
   const { data, isLoading } = UseGetHistoryByHistoryId({
@@ -33,9 +39,9 @@ const GenerateSvg = () => {
   });
 
   const result: ProjectSvg[] = data?.results?.map((icon: any) => ({
-    id: Number(icon.id),  // Ensure the id is a number
+    id: Number(icon.id),
     url: icon.url,
-  })) ?? [];  
+  })) ?? [];
 
   useEffect(() => {
     if (data?.count) {
@@ -46,76 +52,149 @@ const GenerateSvg = () => {
     }
   }, [data, PAGE_SIZE]);
 
-  // API for fetching similar icons
   const { mutate: fetchIconById, isLoading: isFetching, data: similarIconData } = UseFetchIconById();
 
-  // Handle search for similar icon
   const handleSearchForSimilarIcon = (id: number) => {
     fetchIconById(id);
     setIsShowingSimilarIcons(true); // Set flag to true when similar icons are displayed
   };
 
-  // Update visible icons with similar icons when data is fetched
   useEffect(() => {
     if (similarIconData?.similar_icons) {
-      setVisibleIcons(similarIconData.similar_icons); // Display similar icons
+      setTotalSimilarPages(Math.ceil(similarIconData?.similar_icons.length / PAGE_SIZE));
+      setVisibleSimilarIcons(similarIconData.similar_icons); // Display similar icons
     }
   }, [similarIconData]);
 
-  // Reset to paginated results on page change
   useEffect(() => {
     if (!isShowingSimilarIcons && result) {
       setVisibleIcons(result); // Reset to paginated results
     }
   }, [pageNumber, result, isShowingSimilarIcons]);
 
-  // Pagination handlers
+  useEffect(() => {
+    if (isShowingSimilarIcons) {
+      setVisibleIcons([]); // Clear out the icons list when switching to similar icons
+    }
+  }, [isShowingSimilarIcons]);
+
   const handlePreviousBtn = () => {
     if (pageNumber > 1) {
       setPageNumber(pageNumber - 1);
-      setIsShowingSimilarIcons(false); // Reset to paginated results
+      setIsShowingSimilarIcons(false);
     }
   };
 
   const handleNextBtn = () => {
     if (pageNumber < totalPages) {
       setPageNumber(pageNumber + 1);
-      setIsShowingSimilarIcons(false); // Reset to paginated results
+      setIsShowingSimilarIcons(false);
     }
+  };
+
+  const handleSimilarPreviousBtn = () => {
+    if (similarPageNumber > 1) {
+      setSimilarPageNumber(similarPageNumber - 1);
+    }
+  };
+
+  const handleSimilarNextBtn = () => {
+    if (similarPageNumber < totalSimilarPages) {
+      setSimilarPageNumber(similarPageNumber + 1);
+    }
+  };
+
+  // Prepare the icons to download from the similar icons on the current page
+  const getIconsToDownload = () => {
+    if (isShowingSimilarIcons) {
+      const startIndex = (similarPageNumber - 1) * PAGE_SIZE;
+      const endIndex = similarPageNumber * PAGE_SIZE;
+      return visibleSimilarIcons.slice(startIndex, endIndex);
+    }
+    return []; // Return empty if no similar icons are being displayed
   };
 
   return (
     <div className="bg-[#0E142D] border border-[#1C2037] rounded-2xl px-8 py-5">
       {/* download tab */}
       <div className="flex items-center justify-between">
-        <Link
-          href={`${baseURL}app/downloadFreePik?history_id=${selectedProjectHistoryId}&page=${pageNumber}&page_size=${PAGE_SIZE}`}
-          className={cn(buttonVariants({ variant: "link" }), "h-0 px-0")}
-        >
-          <Icons.Download />
-          <h3 className="text-white ml-1">Download PNG</h3>
-        </Link>
+        {!isShowingSimilarIcons?
+       
+       <button
+       onClick={async () => {
+         const url = `${baseURL}app/downloadFreePik?history_id=${selectedProjectHistoryId}&page=${pageNumber}&page_size=${PAGE_SIZE}`;
+         const response = await axios.get(url, { responseType: 'blob' });
+   
+         const link = document.createElement('a');
+         link.href = URL.createObjectURL(response.data);
+         link.download = 'icons.zip';
+         link.click();
+       }}
+       className={cn(buttonVariants({ variant: "link" }), "h-0 px-0")}
+     >
+       <Icons.Download />
+       <h3 className="text-white ml-1">Download PNG</h3>
+     </button>
+       :
+      <button
+      onClick={async() =>
+      {
+        const icons =visibleSimilarIcons.slice(pageNumber + 20, pageNumber + 40)
+        try {
+          setLoading(true);
+          const response = await axios.post(
+            `${baseURL}/app/downloadIcons`,
+            { icons }, 
+            { responseType: 'blob' } 
+          );
+    
+          // Create a link to download the file
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(response.data);
+          link.download = 'icons.zip'; 
+          link.click();
+          setLoading(false);
+    
+          // setSuccessMessage('Icons downloaded successfully!');
+        } catch (error) {
+          setLoading(false);
+          // setError('Failed to download icons.');
+          console.error(error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    }
+      className={cn(buttonVariants({ variant: "link" }), "h-0 px-0")}
+    >
+      <Icons.Download />
+      {loading ? <h3 className="text-white ml-1">Downloading...</h3> : <h3 className="text-white ml-1">Download PNG</h3>}
+      {/* <h3 className="text-white ml-1">Download PNG</h3> */}
+    </button>}
       </div>
 
       {/* icons show */}
       <div className="w-11/12 min-h-[352px] mx-auto flex items-center justify-center bg-[#1C2038] rounded-lg py-5 xl:py-10 3xl:py-7 mt-6">
         {isLoading || isFetching ? (
           <LoaderIcon className="text-white size-8 animate-spin" />
-        ) : !!(visibleIcons.length) ? (
+        ) : !!(isShowingSimilarIcons ? visibleSimilarIcons : visibleIcons).length ? (
           <div className="w-10/12 grid grid-cols-4 xl:grid-cols-4 gap-4 xl:gap-4 3xl:gap-6">
-            {visibleIcons.map(({ url, id }) => (
+            {(isShowingSimilarIcons ? visibleSimilarIcons.slice(similarPageNumber + 20, similarPageNumber + 40) : visibleIcons).map(({ url, id }) => (
               <div className="relative flex flex-col items-center justify-center group" key={id}>
                 {/* Image */}
                 <Image key={id} src={url} width={300} height={300} alt="svg" className="w-14 h-14 mx-auto m-2" />
 
                 {/* Popup content */}
-                <div className="flex flex-col items-center w-4 h-4 bg-black rounded-full absolute left-[90%] bottom-[160%] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className={`${isShowingSimilarIcons && "hidden"} flex flex-col items-center w-4 h-4 bg-black rounded-full absolute left-[90%] bottom-[160%] opacity-0 group-hover:opacity-100 transition-opacity duration-300`}>
                   <div className="bg-white rounded-xl p-4 relative h-[40px] w-[180px] flex items-center justify-center">
                     <button
-                      onClick={() => handleSearchForSimilarIcon(id)}
+                      onClick={() => {
+                        
+                          handleSearchForSimilarIcon(id) 
+                        }}
                       className="text-xs font-bold"
                     >
-                      {isFetching ? "Searching..." : "Search for similar icon"}
+                      { isFetching ? "Searching..." : "Search for similar icon"}
                     </button>
                     <div className="absolute left-7 bottom-[-6px] w-0 h-0 border-l-[8px] border-r-[8px] border-t-[8px] border-t-white border-l-transparent border-r-transparent"></div>
                   </div>
@@ -129,25 +208,36 @@ const GenerateSvg = () => {
       </div>
 
       {/* pagination */}
-      <div className="flex justify-end mt-5">
+     {isShowingSimilarIcons && <div className="w-full flex flex-row items-center justify-end">
+      <button
+        onClick={()=>setIsShowingSimilarIcons(false)}
+        className="text-white mt-5  mr-6 p-3 bg-[#1C2038] rounded-xl">Go Back</button> </div>}
+      <div className="flex justify-end mt-2">
         <div className="flex items-center gap-4">
-          <p className="text-white">{data?.count} icons</p>
+          <p className="text-white">
+            {isShowingSimilarIcons ? similarIconData?.count : data?.count} icons
+          </p>
           <div className="flex items-center gap-2">
             <Button
-              onClick={handlePreviousBtn}
-              disabled={pageNumber === 1 || isShowingSimilarIcons} // Disable pagination if showing similar icons
+              onClick={isShowingSimilarIcons ? handleSimilarPreviousBtn : handlePreviousBtn}
+              disabled={isShowingSimilarIcons ? similarPageNumber === 1 : pageNumber === 1}
               className="h-0 text-black bg-transparent hover:bg-transparent rounded px-0"
             >
               <ChevronLeft className="text-white" />
             </Button>
             <span className="text-white">
               <strong>
-                {pageNumber} of {totalPages}
+                {isShowingSimilarIcons ? similarPageNumber : pageNumber} of{" "}
+                {isShowingSimilarIcons ? totalSimilarPages : totalPages}
               </strong>
             </span>
             <Button
-              onClick={handleNextBtn}
-              disabled={pageNumber === totalPages || isShowingSimilarIcons} // Disable pagination if showing similar icons
+              onClick={isShowingSimilarIcons ? handleSimilarNextBtn : handleNextBtn}
+              disabled={
+                isShowingSimilarIcons
+                  ? similarPageNumber === totalSimilarPages
+                  : pageNumber === totalPages
+              }
               className="h-0 text-white bg-transparent hover:bg-transparent rounded px-0"
             >
               <ChevronRight className="text-white" />

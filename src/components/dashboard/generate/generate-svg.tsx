@@ -62,7 +62,7 @@ const GenerateSvg = () => {
   useEffect(() => {
     if (similarIconData?.similar_icons) {
       setTotalSimilarPages(Math.ceil(similarIconData?.similar_icons.length / PAGE_SIZE));
-      setVisibleSimilarIcons(similarIconData.similar_icons); // Display similar icons
+      setVisibleSimilarIcons(similarIconData.similar_icons ); // Display similar icons
     }
   }, [similarIconData]);
 
@@ -179,7 +179,7 @@ const GenerateSvg = () => {
           <LoaderIcon className="text-white size-8 animate-spin" />
         ) : !!(isShowingSimilarIcons ? visibleSimilarIcons : visibleIcons).length ? (
           <div className="w-10/12 grid grid-cols-4 xl:grid-cols-4 gap-4 xl:gap-4 3xl:gap-6">
-            {(isShowingSimilarIcons ? visibleSimilarIcons.slice(similarPageNumber + 20, similarPageNumber + 40) : visibleIcons).map(({ url, id }) => (
+            {(isShowingSimilarIcons ? visibleSimilarIcons.slice((similarPageNumber-1) * 20  + 1, similarPageNumber * 20 +1) : visibleIcons).map(({ url, id }) => (
               <div className="relative flex flex-col items-center justify-center group" key={id}>
                 {/* Image */}
                 <Image key={id} src={url} width={300} height={300} alt="svg" className="w-14 h-14 mx-auto m-2" />

@@ -3,6 +3,6 @@
   "/page": "app/page.js",
   "/(router)/auth/signup/page": "app/(router)/auth/signup/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/(router)/dashboard/generate/page": "app/(router)/dashboard/generate/page.js",
-  "/(router)/dashboard/page": "app/(router)/dashboard/page.js"
+  "/(router)/dashboard/page": "app/(router)/dashboard/page.js",
+  "/(router)/dashboard/generate/page": "app/(router)/dashboard/generate/page.js"
 }

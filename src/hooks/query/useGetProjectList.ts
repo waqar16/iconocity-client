@@ -1,6 +1,7 @@
 import axiosClient from "@/lib/axiosClient";
 import { useQuery } from "react-query";
 import { toast } from "sonner";
+import Cookies from "js-cookie";
 
 interface Project {
   id: string;
@@ -17,7 +18,16 @@ export const UseGetProjectList = () => {
     queryKey: ["get-project-list"],
     queryFn: GetProjectListApi,
     onError: (error: any) => {
-      toast.error(error?.response?.data?.error || error?.message);
+      if (error?.response?.status === 401) {
+        // Redirect on 401 error
+        // window.location.href = "/auth/signup";
+        Cookies.remove("token");
+        window.location.href = "/auth/signup";
+      } else {
+        // Show other errors
+        toast.error(error?.response?.data?.error || error?.message);
+      }
+
     },
   });
 };

@@ -63,12 +63,21 @@ const UploadFile = ({
         </div>
       </div>
 
-      {/* upload file show */}
+      {/* uploaded file display */}
       {uploadedFiles && (
         <div className="flex items-start justify-between bg-link-added-gradient border border-[#32344A] rounded-lg mx-6 mt-6 p-3">
           {/* file info */}
           <div className="flex items-center gap-3 ">
-            <Icons.UploadFile />
+            {/* Show image thumbnail for image files */}
+            {uploadedFiles.type.startsWith("image/") ? (
+              <img
+                src={URL.createObjectURL(uploadedFiles)}
+                alt="Uploaded Thumbnail"
+                className="w-16 h-16 object-cover rounded-lg"
+              />
+            ) : (
+              <Icons.UploadFile />
+            )}
             <div className="flex flex-col gap-1">
               <span className="text-sm text-white">{uploadedFiles.name}</span>
               <span className="text-[12px] text-[#BAC0DD]">
@@ -76,6 +85,7 @@ const UploadFile = ({
               </span>
             </div>
           </div>
+
           {/* close file */}
           <X
             className="cursor-pointer hover:scale-125"

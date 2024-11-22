@@ -97,7 +97,7 @@ const ChatBot:React.FC<ChatBotProps> = ({keywords}) => {
                 ...prevMessages.slice(0, -1),
                 {
                   ...lastMessage,
-                  content: "Please upload your design first.",
+                  content: "Please retry with a different query and be specific in your request.",
                 },
               ];
             }

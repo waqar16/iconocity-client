@@ -8,6 +8,8 @@ import { UseUpdateIconsByQuery } from "@/hooks/mutation/useUpdateIconsByQuery";
 import { Send } from "lucide-react";
 import Image from "next/image";
 import React, {
+  Dispatch,
+  SetStateAction,
   useCallback,
   useContext,
   useEffect,
@@ -22,9 +24,11 @@ export interface IMessage {
 }
 interface ChatBotProps {
   keywords: string[];
+  setPageNumber: Dispatch<SetStateAction<number>>;
+
 }
 
-const ChatBot:React.FC<ChatBotProps> = ({keywords}) => {
+const ChatBot:React.FC<ChatBotProps> = ({keywords,setPageNumber}) => {
   // context
   const { selectedProjectId } = useContext(ProjectContext);
 
@@ -75,6 +79,7 @@ const ChatBot:React.FC<ChatBotProps> = ({keywords}) => {
       },
       {
         onSuccess: (response) => {
+          setPageNumber(1);
           setMessages((prevMessages) => {
             const lastMessage = prevMessages[prevMessages.length - 1];
             if (!lastMessage.isUser) {

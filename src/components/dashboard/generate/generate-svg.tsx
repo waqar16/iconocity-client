@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {Dispatch, SetStateAction ,useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import { Icons } from "@/components/icons";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -14,24 +14,22 @@ type ProjectSvg = {
   id: number;
   url: string;
 };
-
-
-const GenerateSvg = () => {
-  const [pageNumber, setPageNumber] = useState(1);
+type GenerateSvgProps = {
+  pageNumber: number;
+  setPageNumber: Dispatch<SetStateAction<number>>;
+};
+const GenerateSvg:React.FC<GenerateSvgProps> = ({pageNumber,setPageNumber}) => {
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(false);
 
   const [similarPageNumber, setSimilarPageNumber] = useState(1);
   const [totalSimilarPages, setTotalSimilarPages] = useState(0);
 
-  const [visibleIcons, setVisibleIcons] = useState<ProjectSvg[]>([]); // State for regular icons
-  const [visibleSimilarIcons, setVisibleSimilarIcons] = useState<ProjectSvg[]>([]); // State for similar icons
-
-  const [isShowingSimilarIcons, setIsShowingSimilarIcons] = useState(false); // Track if showing similar icons
-
+  const [visibleIcons, setVisibleIcons] = useState<ProjectSvg[]>([]); 
+  const [visibleSimilarIcons, setVisibleSimilarIcons] = useState<ProjectSvg[]>([]);  
+  const [isShowingSimilarIcons, setIsShowingSimilarIcons] = useState(false);  
   const PAGE_SIZE = 20;
   const { selectedProjectHistoryId } = useContext(ProjectContext);
-
   const { data, isLoading } = UseGetHistoryByHistoryId({
     history_id: selectedProjectHistoryId,
     page_size: PAGE_SIZE,
@@ -67,14 +65,15 @@ const GenerateSvg = () => {
   }, [similarIconData]);
 
   useEffect(() => {
+    
     if (!isShowingSimilarIcons && result) {
-      setVisibleIcons(result); // Reset to paginated results
+      setVisibleIcons(result); 
     }
   }, [pageNumber, result, isShowingSimilarIcons]);
 
   useEffect(() => {
     if (isShowingSimilarIcons) {
-      setVisibleIcons([]); // Clear out the icons list when switching to similar icons
+      setVisibleIcons([]); 
     }
   }, [isShowingSimilarIcons]);
 
@@ -148,18 +147,15 @@ const GenerateSvg = () => {
             { responseType: 'blob' } 
           );
     
-          // Create a link to download the file
-          const link = document.createElement('a');
+           const link = document.createElement('a');
           link.href = URL.createObjectURL(response.data);
           link.download = 'icons.zip'; 
           link.click();
           setLoading(false);
     
-          // setSuccessMessage('Icons downloaded successfully!');
-        } catch (error) {
+          } catch (error) {
           setLoading(false);
-          // setError('Failed to download icons.');
-          console.error(error);
+           console.error(error);
         } finally {
           setLoading(false);
         }
@@ -169,22 +165,18 @@ const GenerateSvg = () => {
     >
       <Icons.Download />
       {loading ? <h3 className="text-white ml-1">Downloading...</h3> : <h3 className="text-white ml-1">Download PNG</h3>}
-      {/* <h3 className="text-white ml-1">Download PNG</h3> */}
-    </button>}
+     </button>}
       </div>
 
-      {/* icons show */}
-      <div className="w-11/12 min-h-[352px] mx-auto flex items-center justify-center bg-[#1C2038] rounded-lg py-5 xl:py-10 3xl:py-7 mt-6">
+       <div className="w-11/12 min-h-[352px] mx-auto flex items-center justify-center bg-[#1C2038] rounded-lg py-5 xl:py-10 3xl:py-7 mt-6">
         {isLoading || isFetching ? (
           <LoaderIcon className="text-white size-8 animate-spin" />
         ) : !!(isShowingSimilarIcons ? visibleSimilarIcons : visibleIcons).length ? (
           <div className="w-10/12 grid grid-cols-4 xl:grid-cols-4 gap-4 xl:gap-4 3xl:gap-6">
             {(isShowingSimilarIcons ? visibleSimilarIcons.slice((similarPageNumber-1) * 20  + 1, similarPageNumber * 20 +1) : visibleIcons).map(({ url, id }) => (
               <div className="relative flex flex-col items-center justify-center group" key={id}>
-                {/* Image */}
                 <Image key={id} src={url} width={300} height={300} alt="svg" className="w-14 h-14 mx-auto m-2" />
 
-                {/* Popup content */}
                 <div className={`${isShowingSimilarIcons && "hidden"} flex flex-col items-center w-4 h-4 bg-black rounded-full absolute left-[90%] bottom-[160%] opacity-0 group-hover:opacity-100 transition-opacity duration-300`}>
                   <div className="bg-white rounded-xl p-4 relative h-[40px] w-[180px] flex items-center justify-center">
                     <button
@@ -207,8 +199,7 @@ const GenerateSvg = () => {
         )}
       </div>
 
-      {/* pagination */}
-     {isShowingSimilarIcons && <div className="w-full flex flex-row items-center justify-end">
+      {isShowingSimilarIcons && <div className="w-full flex flex-row items-center justify-end">
       <button
         onClick={()=>setIsShowingSimilarIcons(false)}
         className="text-white mt-5  mr-6 p-3 bg-[#1C2038] rounded-xl">Go Back</button> </div>}
@@ -226,9 +217,10 @@ const GenerateSvg = () => {
               <ChevronLeft className="text-white" />
             </Button>
             <span className="text-white">
-              <strong>
-                {isShowingSimilarIcons ? similarPageNumber : pageNumber} of{" "}
-                {isShowingSimilarIcons ? totalSimilarPages : totalPages}
+              <strong> 
+                {`${isShowingSimilarIcons ? similarPageNumber : pageNumber} of ${isShowingSimilarIcons ? totalSimilarPages : totalPages}`}
+          
+                
               </strong>
             </span>
             <Button

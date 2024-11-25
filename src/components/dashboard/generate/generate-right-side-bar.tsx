@@ -11,9 +11,10 @@ import AddFigmaLink from "./add-figma-link";
 import { cn } from "@/lib/utils";
 import { ProjectContext } from "@/context/ProjectProvider";
 interface GenerateRightSideBarProps {
+  setPageNumber: React.Dispatch<React.SetStateAction<number>>;
   setKeywords: React.Dispatch<React.SetStateAction<string[]>>;
 }
-const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setKeywords}) => {
+const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setKeywords,setPageNumber}) => {
   // context
   const { setSelectedProjectId } = useContext(ProjectContext);
 
@@ -69,6 +70,7 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setKeywords})
           onSuccess(data) {
             setSelectedProjectId(data.id);
             setThemeColor("");
+            setPageNumber(1);
             setSelectedIconStyle("");
           },
         }

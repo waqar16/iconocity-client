@@ -7,6 +7,8 @@ import { ProjectProvider } from "@/context/ProjectProvider";
 import GenerateSvg from "@/components/dashboard/generate/generate-svg";
 
 const GeneratePage = () => {
+  const [pageNumber, setPageNumber] = React.useState(1);
+
   const [keywords, setKeywords] = React.useState<string[]>([])
   React.useEffect(() => {
     // This code will only run on the client side
@@ -21,10 +23,10 @@ const GeneratePage = () => {
         <GenerateLeftSide />
         {/* center*/}
         <div className="h-[calc(100vh-74px)] flex-1 overflow-y-auto hide-scrollbar pb-10">
-          <GenerateSvg/>
-          <ChatBot  keywords={keywords}/>
+          <GenerateSvg pageNumber={pageNumber} setPageNumber={setPageNumber}/>
+          <ChatBot  keywords={keywords} setPageNumber={setPageNumber}/>
         </div>
-        <GenerateRightSideBar setKeywords={setKeywords}/>
+        <GenerateRightSideBar setKeywords={setKeywords} setPageNumber={setPageNumber}/>
       </div>
     </ProjectProvider>
   );

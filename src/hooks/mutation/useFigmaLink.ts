@@ -21,6 +21,10 @@ export const UseFigmaLink = () => {
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.error || error?.message);
+      window.open(error?.response?.data?.error, "_blank");
     },
+
+
   });
+
 };

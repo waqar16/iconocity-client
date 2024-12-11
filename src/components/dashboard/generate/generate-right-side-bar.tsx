@@ -122,26 +122,30 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setKeywords,s
         <UploadFile
           onFileUpload={handleFileUpload}
           uploadedFiles={uploadedFile}
+          setUrl={setUrl}
+          addedLink={addedLink}
+          setAddedLink={setAddedLink}
+          url={url}
           setUploadedFiles={setUploadedFile}
           isDisabled={!!addedLink ? true : false}
         />
 
         {/* or line */}
-        <div className="flex items-center gap-3 my-4">
+        {/* <div className="flex items-center gap-3 my-4">
           <div className="w-full h-[1px] bg-[#1C2037]" />
           <span className="text-sm text-[#7C7F99]">or</span>
           <div className="w-full h-[1px] bg-[#1C2037]" />
-        </div>
+        </div> */}
 
         {/* Add link tab */}
 
-        <AddFigmaLink
+        {/* <AddFigmaLink
           url={url}
           setUrl={setUrl}
           addedLink={addedLink}
           setAddedLink={setAddedLink}
           uploadedFile={uploadedFile}
-        />
+        /> */}
       </div>
 
       {/* submit button */}

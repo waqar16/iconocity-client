@@ -13,14 +13,19 @@ import axios from "axios";
 type ProjectSvg = {
   id: number;
   url: string;
+  similar_icon_id?:number
 };
 type GenerateSvgProps = {
   pageNumber: number;
   setPageNumber: Dispatch<SetStateAction<number>>;
+  setEnableVariation:Dispatch<SetStateAction<boolean>>;
+  activeIcon:ProjectSvg | null;
+  setActiveIcon:Dispatch<SetStateAction<ProjectSvg | null>>;
 };
-const GenerateSvg:React.FC<GenerateSvgProps> = ({pageNumber,setPageNumber}) => {
+const GenerateSvg:React.FC<GenerateSvgProps> = ({activeIcon,setActiveIcon,pageNumber,setPageNumber,setEnableVariation}) => {
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   const [similarPageNumber, setSimilarPageNumber] = useState(1);
   const [totalSimilarPages, setTotalSimilarPages] = useState(0);
@@ -119,21 +124,22 @@ const GenerateSvg:React.FC<GenerateSvgProps> = ({pageNumber,setPageNumber}) => {
       <div className="flex items-center justify-between">
         {!isShowingSimilarIcons?
        
-       <button
-       onClick={async () => {
-         const url = `${baseURL}app/downloadFreePik?history_id=${selectedProjectHistoryId}&page=${pageNumber}&page_size=${PAGE_SIZE}`;
-         const response = await axios.get(url, { responseType: 'blob' });
+    //    <button
+    //    onClick={async () => {
+    //      const url = `${baseURL}app/downloadFreePik?history_id=${selectedProjectHistoryId}&page=${pageNumber}&page_size=${PAGE_SIZE}`;
+    //      const response = await axios.get(url, { responseType: 'blob' });
    
-         const link = document.createElement('a');
-         link.href = URL.createObjectURL(response.data);
-         link.download = 'icons.zip';
-         link.click();
-       }}
-       className={cn(buttonVariants({ variant: "link" }), "h-0 px-0")}
-     >
-       <Icons.Download />
-       <h3 className="text-white ml-1">Download PNG</h3>
-     </button>
+    //      const link = document.createElement('a');
+    //      link.href = URL.createObjectURL(response.data);
+    //      link.download = 'icons.zip';
+    //      link.click();
+    //    }}
+    //    className={cn(buttonVariants({ variant: "link" }), "h-0 px-0")}
+    //  >
+    //    <Icons.Download />
+    //    <h3 className="text-white ml-1">Download PNG</h3>
+    //  </button>
+    <></>
        :
       <button
       onClick={async() =>
@@ -168,36 +174,96 @@ const GenerateSvg:React.FC<GenerateSvgProps> = ({pageNumber,setPageNumber}) => {
      </button>}
       </div>
 
-       <div className="w-11/12 min-h-[352px] mx-auto flex items-center justify-center bg-[#1C2038] rounded-lg py-5 xl:py-10 3xl:py-7 mt-6">
-        {isLoading || isFetching ? (
-          <LoaderIcon className="text-white size-8 animate-spin" />
-        ) : !!(isShowingSimilarIcons ? visibleSimilarIcons : visibleIcons).length ? (
-          <div className="w-10/12 grid grid-cols-4 xl:grid-cols-4 gap-4 xl:gap-4 3xl:gap-6">
-            {(isShowingSimilarIcons ? visibleSimilarIcons.slice((similarPageNumber-1) * 20  + 1, similarPageNumber * 20 +1) : visibleIcons).map(({ url, id }) => (
-              <div className="relative flex flex-col items-center justify-center group" key={id}>
-                <Image key={id} src={url} width={300} height={300} alt="svg" className="w-14 h-14 mx-auto m-2" />
+       
 
-                <div className={`${isShowingSimilarIcons && "hidden"} flex flex-col items-center w-4 h-4 bg-black rounded-full absolute left-[90%] bottom-[160%] opacity-0 group-hover:opacity-100 transition-opacity duration-300`}>
-                  <div className="bg-white rounded-xl p-4 relative h-[40px] w-[180px] flex items-center justify-center">
+      <div className="w-11/12 min-h-[352px] mx-auto flex items-center justify-center bg-[#1C2038] rounded-lg py-5 xl:py-10 3xl:py-7 mt-6">
+      {isLoading || isFetching ? (
+        <LoaderIcon className="text-white size-8 animate-spin" />
+      ) : !!(isShowingSimilarIcons ? visibleSimilarIcons : visibleIcons).length ? (
+        <div className="w-10/12 grid grid-cols-4 xl:grid-cols-4 gap-4 xl:gap-4 3xl:gap-6">
+          {(isShowingSimilarIcons
+            ? visibleSimilarIcons.slice(
+                (similarPageNumber - 1) * 20 + 1,
+                similarPageNumber * 20 + 1
+              )
+            : visibleIcons
+          ).map((icon,index) => (
+            <div className="relative flex flex-col items-center justify-center" key={icon.id}>
+              <Image
+                key={icon.id}
+                src={icon.url}
+                width={300}
+                height={300}
+                alt="svg"
+                className="w-14 h-14 mx-auto m-2"
+                onClick={() =>{
+                  console.log(activeIcon?.id)
+                  console.log(icon?.id)
+                  if (activeIcon?.id === ( icon.id || icon.similar_icon_id) ) {
+                    // If the same icon is clicked again, toggle the menu visibility
+                    setShowMenu(!showMenu);
+                  } else {
+                    // If a different icon is clicked, update the active icon and show the menu
+                    setActiveIcon({ id:   icon.id || icon?.similar_icon_id || 0, url: icon.url });
+                    setShowMenu(true);
+                  }
+                  console.log(activeIcon )
+                }}
+                  
+              />
+               
+              {showMenu && activeIcon?.id == (icon.similar_icon_id ||   icon.id) &&  ( // Show options if the clicked icon matches the active icon
+                <div className={`   flex flex-col items-center w-4 h-4 bg-black rounded-full absolute left-[90%] bottom-[160%] z-[3000]`}>
+                  <div className="bg-white rounded-xl p-4 relative h-auto w-[180px] flex flex-col items-center justify-center">
+                   
                     <button
                       onClick={() => {
-                        
-                          handleSearchForSimilarIcon(id) 
-                        }}
-                      className="text-xs font-bold"
+                        handleSearchForSimilarIcon( icon.id || icon.similar_icon_id || 0);
+                        setShowMenu(false)
+                        setEnableVariation(false);
+                        setActiveIcon(null)
+
+                      }}
+                      className="w-full hover:bg-gray-400 hover:text-white p-2 rounded-md bg-gray-200 text-xs font-bold"
                     >
-                      { isFetching ? "Searching..." : "Search for similar icon"}
+                      {isFetching ? "Searching..." : "Search for similar icon"}
+                    </button>
+                    <button
+                      onClick={() => { 
+                        setEnableVariation(false);            
+                        setActiveIcon(null)
+
+                        setShowMenu(false)  
+                            window.open(`https://www.freepik.com/icon/${icon.id || icon.similar_icon_id}#fromView=keyword&page=1&position=0&uuid=31cbda18-5c8f-4ebb-8baf-7db46b2eaa4b`, '_blank', 'noopener,noreferrer');
+                         
+                           }}
+                      className="w-full mt-[2px] hover:bg-gray-400 hover:text-white p-2 rounded-md bg-gray-200 text-xs font-bold"
+                    >
+                      {"Download Icon"}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setEnableVariation(true);
+                        setShowMenu(false) 
+                        setActiveIcon({id: icon.id ||icon.similar_icon_id ||0,url:icon.url})
+
+
+                      }}
+                      className="w-full mt-[2px] hover:bg-gray-400 hover:text-white p-2 rounded-md bg-gray-200 text-xs font-bold"
+                    >
+                      {"Variations"}
                     </button>
                     <div className="absolute left-7 bottom-[-6px] w-0 h-0 border-l-[8px] border-r-[8px] border-t-[8px] border-t-white border-l-transparent border-r-transparent"></div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-white mx-auto text-center">No Icons found!</p>
-        )}
-      </div>
+              )}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-white mx-auto text-center">No Icons found!</p>
+      )}
+    </div>
 
       {isShowingSimilarIcons && <div className="w-full flex flex-row items-center justify-end">
       <button

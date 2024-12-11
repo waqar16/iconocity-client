@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { SketchPicker } from "react-color";
 import { Button } from "./ui/button";
 import { Icons } from "./icons";
 
-// color theme array
+// Color and shape data
 export const defaultColor = [
   "#000",
   "#0000FF",
@@ -38,26 +37,17 @@ const beautifulColors = [
   "#FFFF00",
 ];
 
-// icon style array
-interface IconData {
-  text: string;
-  icon: JSX.Element;
-  id: string;
-}
-
-const STAR_ICON: IconData[] = [
+const STAR_ICON = [
   { icon: <Icons.OutlineStar />, text: "Outline", id: "outline" },
   { icon: <Icons.FillStar />, text: "Fill", id: "fill" },
-  { icon: <Icons.LinerColorStar />, text: "Linear color", id: "lineal-color" },
-  { icon: <Icons.HandDrownStar />, text: "HandDrawn ", id: "hand-drawn" },
+  { icon: <Icons.LinerColorStar />, text: "Linear color", id: "linear-color" },
+  { icon: <Icons.HandDrownStar />, text: "HandDrawn", id: "hand-drawn" },
 ];
 
 type ThemeColorProps = {
   themeColor: string | undefined;
   setThemeColor: React.Dispatch<React.SetStateAction<string | undefined>>;
-  setSelectedIconStyle: React.Dispatch<
-    React.SetStateAction<string | undefined>
-  >;
+  setSelectedIconStyle: React.Dispatch<React.SetStateAction<string | undefined>>;
   selectedIconStyle: string | undefined;
 };
 
@@ -67,64 +57,76 @@ const ThemeColor: React.FC<ThemeColorProps> = ({
   setSelectedIconStyle,
   selectedIconStyle,
 }) => {
-  const [isColorPicker, setIsColorPicker] = useState(false);
+  const [isColorVisible, setIsColorVisible] = useState(true);
+  const [isShapeVisible, setIsShapeVisible] = useState(false);
 
-  // Icon Style
-  const handleIconStyle = (text: string) => {
-    setSelectedIconStyle(text);
+  // Toggle visibility handlers
+  const toggleColors = () => {
+    setIsColorVisible((prev) => !prev);
+    setIsShapeVisible(false); // Hide shapes when showing colors
+  };
+
+  const toggleShapes = () => {
+    setIsShapeVisible((prev) => !prev);
+    setIsColorVisible(false); // Hide colors when showing shapes
+  };
+
+  // Icon style handler
+  const handleIconStyle = (id: string) => {
+    setSelectedIconStyle(id);
   };
 
   return (
-    <div className="bg-colorPicker-gradient border  border-[#1C2037] rounded-2xl p-3 xl:p-5">
-      <h1 className="text-base text-[#BAC0DD] ">Select colors</h1>
+    <div className="bg-colorPicker-gradient border border-[#1C2037] rounded-2xl p-3 xl:p-5">
+      {/* Toggle Buttons */}
+      <div className="flex justify-between items-center mb-5">
+        <Button
+          onClick={toggleColors}
+          className={cn(
+            "px-4 py-2 rounded-lg",
+            isColorVisible ? "bg-[#080e28] text-white" : "bg-[#1C223F] text-[#BAC0DD]"
+          )}
+        >
+          Select Colors
+        </Button>
+        <Button
+          onClick={toggleShapes}
+          className={cn(
+            "px-4 py-2 rounded-lg",
+            isShapeVisible ? "bg-[#080e28] text-white" : "bg-[#1C223F] text-[#BAC0DD]"
+          )}
+        >
+          Select Shapes
+        </Button>
+      </div>
 
-      {/* color picker */}
-      <div className="flex justify-between mt-2 2xl:mt-3">
-        {/* default color */}
-        <div className="flex flex-wrap gap-2">
+      {/* Color Picker */}
+    {isColorVisible &&   <div
+        className={cn(
+          "transition-all duration-300 overflow-hidden h-[100px]" )}
+      >
+        {/* <h1 className="text-base text-[#BAC0DD]">Select Colors</h1> */}
+        <div className="flex flex-wrap gap-2 mt-2">
           {defaultColor.map((color, i) => (
             <div
               key={i}
               className={cn(
-                "w-6 2xl:w-8 h-6 2xl:h-8  rounded-full cursor-pointer",
+                "w-6 2xl:w-8 h-6 2xl:h-8 rounded-full cursor-pointer",
                 themeColor === color ? "border-2 border-white scale-110" : ""
               )}
-              style={{
-                backgroundColor: color,
-              }}
+              style={{ backgroundColor: color }}
               onClick={() => setThemeColor(color)}
             />
           ))}
         </div>
-        {/* color picker*/}
-        {/* <div className="relative flex items-center gap-2">
-          <span className="text-xs text-white font-medium">Open editor</span>
-          <Image
-            src={"/generate/palette.webp"}
-            width={40}
-            height={40}
-            alt="colorSvg"
-            className="w-6 2xl:w-8 h-auto cursor-pointer"
-            onClick={() => setIsColorPicker(!isColorPicker)}
-          />
+      </div>}
 
-          {isColorPicker && (
-            <div className="absolute top-10 right-0">
-              <SketchPicker
-                presetColors={beautifulColors}
-                onChange={(color) => {
-                  setThemeColor(color.hex);
-                }}
-                color={themeColor ? themeColor : "#C54EC9"}
-              />
-            </div>
-          )}
-        </div> */}
-      </div>
-
-      {/* select style */}
-      <div className="mt-5 xl:mt-7">
-        <h1 className="text-base text-[#BAC0DD]">Select shape</h1>
+      {/* Shape Selector */}
+   {isShapeVisible &&    <div
+        className={cn(
+          "transition-all duration-300 overflow-hidden mt-5  h-[100px]" )}
+      >
+        {/* <h1 className="text-base text-[#BAC0DD]">Select Shapes</h1> */}
         <div className="flex flex-wrap gap-3 mt-2">
           {STAR_ICON.map(({ text, icon, id }, i) => (
             <Button
@@ -142,7 +144,7 @@ const ThemeColor: React.FC<ThemeColorProps> = ({
             </Button>
           ))}
         </div>
-      </div>
+      </div>}
     </div>
   );
 };

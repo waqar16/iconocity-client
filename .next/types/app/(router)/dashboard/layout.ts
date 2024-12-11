@@ -1,4 +1,4 @@
-// File: D:\CodeNexo\pack\pack\dashboard\src\app\(router)\dashboard\layout.tsx
+// File: D:\office\iconocity-client\src\app\(router)\dashboard\layout.tsx
 import * as entry from '../../../../../src/app/(router)/dashboard/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

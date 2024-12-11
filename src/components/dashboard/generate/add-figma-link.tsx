@@ -32,7 +32,7 @@ const AddFigmaLink: React.FC<AddLinksProps> = ({
       <div className="flex gap-4 items-center bg-link-added-gradient border border-[#32344A] rounded-lg mx-6 py-1 2xl:py-2 px-5">
         <Input
           type="url"
-          placeholder="Add file URL"
+          placeholder="Add image/figma URL"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           disabled={!!uploadedFile}

@@ -1,4 +1,4 @@
-// File: D:\CodeNexo\pack\pack\dashboard\src\app\(router)\auth\signup\page.tsx
+// File: D:\office\iconocity-client\src\app\(router)\auth\signup\page.tsx
 import * as entry from '../../../../../../src/app/(router)/auth/signup/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

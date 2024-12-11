@@ -121,7 +121,7 @@ const ChatBot:React.FC<ChatBotProps> = ({keywords,setPageNumber}) => {
     setInputMessage(keywords.join(", "));
   }, [keywords]);
   return (
-    <div className="relative bg-chatbot-gradient border border-[#1C2037] rounded-2xl px-8 py-5 mt-5">
+    <div className="absolute bottom-20 right-0 bg-chatbot-gradient border border-[#1C2037] rounded-2xl px-8 py-5 mt-5 w-[300px]">
             {/* input field */}
       <div className="flex items-center bg-[#1C2038] border border-[#2D3033] focus-within:border-white rounded-lg mt-4 py-2 pl-3 pr-3">
         <Input
@@ -148,7 +148,7 @@ const ChatBot:React.FC<ChatBotProps> = ({keywords,setPageNumber}) => {
       {/* messages */}
       {messages.length > 0 ? (
         <div
-          className="h-[300px] space-y-5 mt-9  overflow-y-auto custom-scrollbar"
+          className="max-h-[100px] space-y-5 mt-9  overflow-y-auto custom-scrollbar"
           ref={containerRef}
         >
           {messages.map((msg) => (
@@ -181,7 +181,7 @@ const ChatBot:React.FC<ChatBotProps> = ({keywords,setPageNumber}) => {
           ))}
         </div>
       ) : (
-        <div className="h-[300px] flex items-center justify-center">
+        <div className="h-[100px] flex items-center justify-center">
           <div className="flex flex-col items-center justify-center gap-4 text-white">
             <Icons.message />
             <p className="text-xs">Type your icon design requests here</p>

@@ -1,10 +1,11 @@
 import axiosClient from "@/lib/axiosClient";
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "sonner";
-
+import Cookies from "js-cookie";
 const FigmaLinkApi = async ({ screen_link, icon_color, icon_style }: any) => {
   const res = await axiosClient.post("app/imageLink/", {
     screen_link,
+    // figma_token: Cookies.get('figma_token'),
     icon_color,
     icon_style,
   });
@@ -20,8 +21,19 @@ export const UseFigmaLink = () => {
       qc.invalidateQueries({ queryKey: ["get-project-list"] });
     },
     onError: (error: any) => {
-      toast.error(error?.response?.data?.error || error?.message);
-      window.open(error?.response?.data?.error, "_blank");
+      console.log(error?.response?.data?.oauth_url)
+      if (error?.response?.data?.oauth_url) {
+        toast(error?.response?.data?.error, {
+          action: {
+            label: 'Allow Access',
+            onClick: () => {
+              window.open(error?.response?.data?.oauth_url, "_blank");
+
+            }
+          },
+        })
+        // window.open(error?.response?.data?.oauth_url, "_blank");
+      }
     },
 
 

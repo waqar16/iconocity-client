@@ -21,8 +21,10 @@ type GenerateSvgProps = {
   setEnableVariation:Dispatch<SetStateAction<boolean>>;
   activeIcon:ProjectSvg | null;
   setActiveIcon:Dispatch<SetStateAction<ProjectSvg | null>>;
+  setIsShowingSimilarIcons:Dispatch<SetStateAction<boolean>>;
+  isShowingSimilarIcons:boolean
 };
-const GenerateSvg:React.FC<GenerateSvgProps> = ({activeIcon,setActiveIcon,pageNumber,setPageNumber,setEnableVariation}) => {
+const GenerateSvg:React.FC<GenerateSvgProps> = ({isShowingSimilarIcons,setIsShowingSimilarIcons,activeIcon,setActiveIcon,pageNumber,setPageNumber,setEnableVariation}) => {
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
@@ -32,7 +34,7 @@ const GenerateSvg:React.FC<GenerateSvgProps> = ({activeIcon,setActiveIcon,pageNu
 
   const [visibleIcons, setVisibleIcons] = useState<ProjectSvg[]>([]); 
   const [visibleSimilarIcons, setVisibleSimilarIcons] = useState<ProjectSvg[]>([]);  
-  const [isShowingSimilarIcons, setIsShowingSimilarIcons] = useState(false);  
+  // const [isShowingSimilarIcons, setIsShowingSimilarIcons] = useState(false);  
   const PAGE_SIZE = 20;
   const { selectedProjectHistoryId } = useContext(ProjectContext);
   const { data, isLoading } = UseGetHistoryByHistoryId({
@@ -117,6 +119,27 @@ const GenerateSvg:React.FC<GenerateSvgProps> = ({activeIcon,setActiveIcon,pageNu
     }
     return []; // Return empty if no similar icons are being displayed
   };
+  const menuRef = React.useRef<HTMLDivElement | null>(null); // Ref for menu container
+
+  // Other state and hooks...
+
+  // Close menu on clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        menuRef.current && 
+        !menuRef.current.contains(event.target as Node) // Check if the click is outside the menu
+      ) {
+        setShowMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="bg-[#0E142D] border border-[#1C2037] rounded-2xl px-8 py-5">
@@ -141,37 +164,39 @@ const GenerateSvg:React.FC<GenerateSvgProps> = ({activeIcon,setActiveIcon,pageNu
     //  </button>
     <></>
        :
-      <button
-      onClick={async() =>
-      {
-        const icons =visibleSimilarIcons.slice(pageNumber + 20, pageNumber + 40)
-        try {
-          setLoading(true);
-          const response = await axios.post(
-            `${baseURL}/app/downloadIcons`,
-            { icons }, 
-            { responseType: 'blob' } 
-          );
+    //   <button
+    //   onClick={async() =>
+    //   {
+    //     const icons =visibleSimilarIcons.slice(pageNumber + 20, pageNumber + 40)
+    //     try {
+    //       setLoading(true);
+    //       const response = await axios.post(
+    //         `${baseURL}/app/downloadIcons`,
+    //         { icons }, 
+    //         { responseType: 'blob' } 
+    //       );
     
-           const link = document.createElement('a');
-          link.href = URL.createObjectURL(response.data);
-          link.download = 'icons.zip'; 
-          link.click();
-          setLoading(false);
+    //        const link = document.createElement('a');
+    //       link.href = URL.createObjectURL(response.data);
+    //       link.download = 'icons.zip'; 
+    //       link.click();
+    //       setLoading(false);
     
-          } catch (error) {
-          setLoading(false);
-           console.error(error);
-        } finally {
-          setLoading(false);
-        }
-      }
-    }
-      className={cn(buttonVariants({ variant: "link" }), "h-0 px-0")}
-    >
-      <Icons.Download />
-      {loading ? <h3 className="text-white ml-1">Downloading...</h3> : <h3 className="text-white ml-1">Download PNG</h3>}
-     </button>}
+    //       } catch (error) {
+    //       setLoading(false);
+    //        console.error(error);
+    //     } finally {
+    //       setLoading(false);
+    //     }
+    //   }
+    // }
+    //   className={cn(buttonVariants({ variant: "link" }), "h-0 px-0")}
+    // >
+    //   <Icons.Download />
+    //   {loading ? <h3 className="text-white ml-1">Downloading...</h3> : <h3 className="text-white ml-1">Download PNG</h3>}
+    //  </button>
+    <></>
+     }
       </div>
 
        
@@ -195,7 +220,7 @@ const GenerateSvg:React.FC<GenerateSvgProps> = ({activeIcon,setActiveIcon,pageNu
                 width={300}
                 height={300}
                 alt="svg"
-                className="w-14 h-14 mx-auto m-2"
+                className="w-14 h-14 mx-auto m-2 cursor-pointer"
                 onClick={() =>{
                   console.log(activeIcon?.id)
                   console.log(icon?.id)
@@ -213,7 +238,9 @@ const GenerateSvg:React.FC<GenerateSvgProps> = ({activeIcon,setActiveIcon,pageNu
               />
                
               {showMenu && activeIcon?.id == (icon.similar_icon_id ||   icon.id) &&  ( // Show options if the clicked icon matches the active icon
-                <div className={`   flex flex-col items-center w-4 h-4 bg-black rounded-full absolute left-[90%] bottom-[160%] z-[3000]`}>
+                <div
+                ref={menuRef}
+                className={`   flex flex-col items-center w-4 h-4 bg-black rounded-full absolute left-[90%] bottom-[160%] z-[3000]`}>
                   <div className="bg-white rounded-xl p-4 relative h-auto w-[180px] flex flex-col items-center justify-center">
                    
                     <button

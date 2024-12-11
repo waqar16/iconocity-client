@@ -13,8 +13,9 @@ import { ProjectContext } from "@/context/ProjectProvider";
 interface GenerateRightSideBarProps {
   setPageNumber: React.Dispatch<React.SetStateAction<number>>;
   setKeywords: React.Dispatch<React.SetStateAction<string[]>>;
+  setIsShowingSimilarIcons:React.Dispatch<React.SetStateAction<boolean>>;
 }
-const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setKeywords,setPageNumber}) => {
+const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setIsShowingSimilarIcons,setKeywords,setPageNumber}) => {
   // context
   const { setSelectedProjectId } = useContext(ProjectContext);
 
@@ -72,6 +73,7 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setKeywords,s
             setThemeColor("");
             setPageNumber(1);
             setSelectedIconStyle("");
+            setIsShowingSimilarIcons(false)
           },
         }
       );
@@ -89,6 +91,7 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setKeywords,s
             setSelectedProjectId(data.id);
             setThemeColor("");
             setSelectedIconStyle("");
+            setIsShowingSimilarIcons(false)
           },
         });
         setKeywords(link_api?.attributes?.keywords.slice(1,4))
@@ -117,7 +120,7 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setKeywords,s
       />
 
       {/* upload file tab and add link tab */}
-      <div className="bg-colorPicker-gradient border  border-[#1C2037] rounded-2xl py-4 mt-6">
+      <div className="bg-colorPicker-gradient border  border-[#1C2037] rounded-2xl py-4 mt-4">
         {/* upload file tab */}
         <UploadFile
           onFileUpload={handleFileUpload}
@@ -149,7 +152,7 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setKeywords,s
       </div>
 
       {/* submit button */}
-      <div className="px-4 mt-7">
+      <div className="px-4 mt-4">
         <Button
           type="submit"
           onClick={onSubmit}

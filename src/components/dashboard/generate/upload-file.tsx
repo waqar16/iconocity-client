@@ -100,19 +100,16 @@ const UploadFile = ({
           <div
             {...getRootProps()}
             className={cn(
-              "border-2 border-dashed border-white rounded-lg py-4 mx-4",
+              "border-2 border-dashed border-white rounded-lg py-3 mx-4",
               isDisabled ? "cursor-not-allowed" : "cursor-pointer"
             )}
           >
             <input {...getInputProps()} />
-            <Icons.Upload className="w-6 h-6 mx-auto" />
-            <p className="text-[10px] text-[#7C7F99] text-center mt-2">
+            <p className="text-[10px] text-[#7C7F99] text-center ">
               Drag & Drop or Choose a file to upload
             </p>
-            <div className="flex gap-1 justify-center text-[10px] text-[#BAC0DD] mt-2">
-              <span>PNG</span>
-              <span>JPG</span>
-            </div>
+            <Icons.Upload className="w-3 h-3 mx-auto" />
+            
           </div>
 
           {/* Uploaded File Display */}

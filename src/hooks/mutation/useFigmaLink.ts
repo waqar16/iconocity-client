@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 const FigmaLinkApi = async ({ screen_link, icon_color, icon_style }: any) => {
   const res = await axiosClient.post("app/imageLink/", {
     screen_link,
-    // figma_token: Cookies.get('figma_token'),
+    figma_token: Cookies.get('figma_token'),
     icon_color,
     icon_style,
   });

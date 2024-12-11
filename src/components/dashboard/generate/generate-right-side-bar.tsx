@@ -14,8 +14,9 @@ interface GenerateRightSideBarProps {
   setPageNumber: React.Dispatch<React.SetStateAction<number>>;
   setKeywords: React.Dispatch<React.SetStateAction<string[]>>;
   setIsShowingSimilarIcons:React.Dispatch<React.SetStateAction<boolean>>;
+  figmaToken:string | null;
 }
-const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setIsShowingSimilarIcons,setKeywords,setPageNumber}) => {
+const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({figmaToken,setIsShowingSimilarIcons,setKeywords,setPageNumber}) => {
   // context
   const { setSelectedProjectId } = useContext(ProjectContext);
 
@@ -45,9 +46,9 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setIsShowingS
       const linkPayload: {
         screen_link: string | null;
         icon_color?: string;
-        icon_style?: string;
+        icon_style?: string; 
       } = {
-        screen_link: addedLink,
+        screen_link: addedLink 
       };
       if (themeColor) {
         linkPayload["icon_color"] = themeColor;

@@ -6,8 +6,42 @@ import GenerateRightSideBar from "@/components/dashboard/generate/generate-right
 import { ProjectProvider } from "@/context/ProjectProvider";
 import GenerateSvg from "@/components/dashboard/generate/generate-svg";
 import CreateVariations from "@/components/dashboard/generate/create-variations";
-
+import Cookies from 'js-cookie'
+import { useSearchParams } from 'next/navigation';
+import { baseURL } from "@/lib/axiosClient";
+import axios from "axios";
 const GeneratePage = () => {
+  const searchParams = useSearchParams();
+  const [code, setCode] = React.useState<string | null>(null);
+  const [figmaToken, setFigmaToken] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const codeParam = searchParams.get('code');
+      if (codeParam) {
+        try {
+          const response = await axios.post(
+            `${baseURL}/app/exchangeFigmaCodeForToken/`,
+            { code: codeParam },
+            {
+              headers: {
+                Authorization: `Bearer ${Cookies.get('token')}`,
+              },
+            }
+          );
+          console.log('Response:', response.data.token_data.access_token);
+          setFigmaToken(response.data.token_data.access_token);
+          Cookies.set('figma_token',response.data.token_data.access_token)
+        } catch (error) {
+          console.error('Error fetching token:', error);
+        } finally { 
+        }
+      }
+    };
+  
+    fetchData(); 
+  }, [searchParams]);
+   
   const [activeIcon, setActiveIcon] = React.useState<{id: number;
     url: string;
     showMenu?:boolean;
@@ -65,7 +99,7 @@ const GeneratePage = () => {
           {enableVariation && <CreateVariations activeIcon={activeIcon} setPageNumber={setPageNumber} enableVariation = {enableVariation}/>}
           {/* <ChatBot  keywords={keywords} setPageNumber={setPageNumber}/> */}
         </div>
-        <GenerateRightSideBar  setIsShowingSimilarIcons={setIsShowingSimilarIcons} setKeywords={setKeywords} setPageNumber={setPageNumber}/>
+        <GenerateRightSideBar figmaToken={figmaToken}  setIsShowingSimilarIcons={setIsShowingSimilarIcons} setKeywords={setKeywords} setPageNumber={setPageNumber}/>
       </div>
     </ProjectProvider>
   );

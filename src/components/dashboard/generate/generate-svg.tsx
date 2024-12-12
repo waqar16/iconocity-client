@@ -148,7 +148,7 @@ const GenerateSvg:React.FC<GenerateSvgProps> = ({isShowingSimilarIcons,setIsShow
       {/* download tab */}
       <div className="flex flex-col items-center my-2 w-full">
         <h1 className="text-white font-bold text-3xl">{'Welcome :)'}</h1>
-        <p className="text-gray-500">{(isShowingSimilarIcons ? visibleSimilarIcons : visibleIcons).length?'Click on icons to view more options':'Upload Image/figma file on bottom right side to get started'}</p>
+        <p className="text-gray-500">{(isShowingSimilarIcons ? visibleSimilarIcons : visibleIcons).length?'Click on icons to view more options':'Upload Image/figma file on bottom right side to generate icons'}</p>
       </div>
 
        

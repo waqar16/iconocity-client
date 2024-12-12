@@ -60,6 +60,8 @@ const GenerateSvg:React.FC<GenerateSvgProps> = ({isShowingSimilarIcons,setIsShow
   const { mutate: fetchIconById, isLoading: isFetching, data: similarIconData } = UseFetchIconById();
 
   const handleSearchForSimilarIcon = (id: number) => {
+    setPageNumber(1)
+    setSimilarPageNumber(1)
     fetchIconById(id);
     setIsShowingSimilarIcons(true); // Set flag to true when similar icons are displayed
   };
@@ -142,61 +144,11 @@ const GenerateSvg:React.FC<GenerateSvgProps> = ({isShowingSimilarIcons,setIsShow
   }, []);
 
   return (
-    <div className="bg-[#0E142D] border border-[#1C2037] rounded-2xl px-8 py-5">
+    <div className="bg-[#0E142D] border border-[#1C2037] rounded-2xl px-8 py-5 ">
       {/* download tab */}
-      <div className="flex items-center justify-between">
-        {!isShowingSimilarIcons?
-       
-    //    <button
-    //    onClick={async () => {
-    //      const url = `${baseURL}app/downloadFreePik?history_id=${selectedProjectHistoryId}&page=${pageNumber}&page_size=${PAGE_SIZE}`;
-    //      const response = await axios.get(url, { responseType: 'blob' });
-   
-    //      const link = document.createElement('a');
-    //      link.href = URL.createObjectURL(response.data);
-    //      link.download = 'icons.zip';
-    //      link.click();
-    //    }}
-    //    className={cn(buttonVariants({ variant: "link" }), "h-0 px-0")}
-    //  >
-    //    <Icons.Download />
-    //    <h3 className="text-white ml-1">Download PNG</h3>
-    //  </button>
-    <></>
-       :
-    //   <button
-    //   onClick={async() =>
-    //   {
-    //     const icons =visibleSimilarIcons.slice(pageNumber + 20, pageNumber + 40)
-    //     try {
-    //       setLoading(true);
-    //       const response = await axios.post(
-    //         `${baseURL}/app/downloadIcons`,
-    //         { icons }, 
-    //         { responseType: 'blob' } 
-    //       );
-    
-    //        const link = document.createElement('a');
-    //       link.href = URL.createObjectURL(response.data);
-    //       link.download = 'icons.zip'; 
-    //       link.click();
-    //       setLoading(false);
-    
-    //       } catch (error) {
-    //       setLoading(false);
-    //        console.error(error);
-    //     } finally {
-    //       setLoading(false);
-    //     }
-    //   }
-    // }
-    //   className={cn(buttonVariants({ variant: "link" }), "h-0 px-0")}
-    // >
-    //   <Icons.Download />
-    //   {loading ? <h3 className="text-white ml-1">Downloading...</h3> : <h3 className="text-white ml-1">Download PNG</h3>}
-    //  </button>
-    <></>
-     }
+      <div className="flex flex-col items-center my-2 w-full">
+        <h1 className="text-white font-bold text-3xl">{'Welcome :) !'}</h1>
+        <p className="text-gray-500">Click on icons to view more options</p>
       </div>
 
        
@@ -240,7 +192,7 @@ const GenerateSvg:React.FC<GenerateSvgProps> = ({isShowingSimilarIcons,setIsShow
               {showMenu && activeIcon?.id == (icon.similar_icon_id ||   icon.id) &&  ( // Show options if the clicked icon matches the active icon
                 <div
                 ref={menuRef}
-                className={`   flex flex-col items-center w-4 h-4 bg-black rounded-full absolute left-[90%] bottom-[160%] z-[3000]`}>
+                className={`   flex flex-col items-center w-4 h-4 bg-black rounded-full absolute left-[100%] top-[-120px] z-[4000]`}>
                   <div className="bg-white rounded-xl p-4 relative h-auto w-[180px] flex flex-col items-center justify-center">
                    
                     <button

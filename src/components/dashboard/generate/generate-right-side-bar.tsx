@@ -13,10 +13,10 @@ import { ProjectContext } from "@/context/ProjectProvider";
 interface GenerateRightSideBarProps {
   setPageNumber: React.Dispatch<React.SetStateAction<number>>;
   setKeywords: React.Dispatch<React.SetStateAction<string[]>>;
-  setIsShowingSimilarIcons:React.Dispatch<React.SetStateAction<boolean>>;
-  figmaToken:string | null;
+  setIsShowingSimilarIcons:React.Dispatch<React.SetStateAction<boolean>>; 
+  setEnableVariation:React.Dispatch<React.SetStateAction<boolean>>;
 }
-const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({figmaToken,setIsShowingSimilarIcons,setKeywords,setPageNumber}) => {
+const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setEnableVariation,setIsShowingSimilarIcons,setKeywords,setPageNumber}) => {
   // context
   const { setSelectedProjectId } = useContext(ProjectContext);
 
@@ -42,6 +42,7 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({figmaToken,se
     UseUploadImage();  
   // submit
   const onSubmit = async () => {
+
     try {
       const linkPayload: {
         screen_link: string | null;
@@ -75,6 +76,7 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({figmaToken,se
             setPageNumber(1);
             setSelectedIconStyle("");
             setIsShowingSimilarIcons(false)
+            setEnableVariation(false)
           },
         }
       );
@@ -93,6 +95,7 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({figmaToken,se
             setThemeColor("");
             setSelectedIconStyle("");
             setIsShowingSimilarIcons(false)
+            setEnableVariation(false)
           },
         });
         setKeywords(link_api?.attributes?.keywords.slice(1,4))

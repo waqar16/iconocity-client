@@ -96,11 +96,12 @@ const GeneratePageComponent  = () => {
         <GenerateLeftSide />
         {/* center*/}
         <div className="h-[calc(100vh-74px)] flex-1 overflow-y-auto hide-scrollbar pb-10">
+          
           <GenerateSvg isShowingSimilarIcons = {isShowingSimilarIcons} setIsShowingSimilarIcons={setIsShowingSimilarIcons} activeIcon={activeIcon} setActiveIcon={setActiveIcon} pageNumber={pageNumber} setPageNumber={setPageNumber} setEnableVariation={setEnableVariation}/>
           {enableVariation && <CreateVariations activeIcon={activeIcon} setPageNumber={setPageNumber} enableVariation = {enableVariation}/>}
           {/* <ChatBot  keywords={keywords} setPageNumber={setPageNumber}/> */}
         </div>
-        <GenerateRightSideBar figmaToken={figmaToken}  setIsShowingSimilarIcons={setIsShowingSimilarIcons} setKeywords={setKeywords} setPageNumber={setPageNumber}/>
+        <GenerateRightSideBar setEnableVariation={setEnableVariation}  setIsShowingSimilarIcons={setIsShowingSimilarIcons} setKeywords={setKeywords} setPageNumber={setPageNumber}/>
       </div>
     </ProjectProvider>
   );

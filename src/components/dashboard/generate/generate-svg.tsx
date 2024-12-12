@@ -147,13 +147,13 @@ const GenerateSvg:React.FC<GenerateSvgProps> = ({isShowingSimilarIcons,setIsShow
     <div className="bg-[#0E142D] border border-[#1C2037] rounded-2xl px-8 py-5 ">
       {/* download tab */}
       <div className="flex flex-col items-center my-2 w-full">
-        <h1 className="text-white font-bold text-3xl">{'Welcome :) !'}</h1>
-        <p className="text-gray-500">Click on icons to view more options</p>
+        <h1 className="text-white font-bold text-3xl">{'Welcome :)'}</h1>
+        <p className="text-gray-500">{(isShowingSimilarIcons ? visibleSimilarIcons : visibleIcons).length?'Click on icons to view more options':'Upload Image/figma file on bottom right side to get started'}</p>
       </div>
 
        
 
-      <div className="w-11/12 min-h-[352px] mx-auto flex items-center justify-center bg-[#1C2038] rounded-lg py-5 xl:py-10 3xl:py-7 mt-6">
+      <div className="w-11/12 min-h-[352px] mx-auto flex items-center justify-center bg-[#1C2038] rounded-lg py-5 xl:py-10 3xl:py-7 mt-4">
       {isLoading || isFetching ? (
         <LoaderIcon className="text-white size-8 animate-spin" />
       ) : !!(isShowingSimilarIcons ? visibleSimilarIcons : visibleIcons).length ? (

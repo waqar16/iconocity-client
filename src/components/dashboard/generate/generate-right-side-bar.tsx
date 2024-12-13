@@ -80,10 +80,10 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setEnableVari
           },
         }
       );
-      setKeywords(data2?.attributes?.keywords.slice(1,4))
-      console.log("data2?.attributes?.keywords.slice(1,4)",data2?.attributes?.keywords.slice(1,4)) 
-
-      localStorage.setItem("keywords", JSON.stringify(data2?.attributes?.keywords.slice(1,4)))
+      setKeywords(data2?.attributes?.description.split(",").slice(1,4))
+      console.log("data2?.attributes?.description.split(1,4)",data2?.attributes?.description.split(",").slice(1,4))
+      
+      localStorage.setItem("keywords", JSON.stringify(data2?.attributes?.description.split(",").slice(1,4)))
       
       }
       
@@ -98,9 +98,10 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setEnableVari
             setEnableVariation(false)
           },
         });
-        setKeywords(link_api?.attributes?.keywords.slice(1,4))
-      console.log("data2?.attributes?.keywords.slice(1,4)",link_api?.attributes?.keywords.slice(1,4)) 
-      const cleanedKeywords = link_api?.attributes?.keywords.slice(1, 4).map((keyword: string) => keyword.replace(/['"]+/g, '').trim());
+        // setKeywords(link_api?.attributes?.keywords.slice(1,4))
+        setKeywords(link_api?.attributes?.description.split(",").slice(1,4))
+ 
+      const cleanedKeywords = link_api?.attributes?.description.split(",").slice(1,4).map((keyword: string) => keyword.replace(/['"]+/g, '').trim());
 
       localStorage.setItem("keywords", JSON.stringify(cleanedKeywords));
       }

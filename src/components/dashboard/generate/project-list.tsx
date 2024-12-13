@@ -8,7 +8,10 @@ import { cn } from "@/lib/utils";
 import { ChevronDown, LoaderIcon, SquareCheckBig } from "lucide-react";
 import React, { useContext, useEffect, useRef, useState } from "react";
 
-const ProjectList = () => {
+interface GenerateLeftSideBarProps {
+  setPageNumber: React.Dispatch<React.SetStateAction<number>>;
+} 
+const ProjectList:React.FC<GenerateLeftSideBarProps> = ({setPageNumber}) => {
   // context
   const { setSelectedProjectId, selectedProjectId } =
     useContext(ProjectContext);
@@ -80,7 +83,9 @@ const ProjectList = () => {
             data?.map(({ id, name }) => (
               <div
                 key={id}
-                onClick={() => setSelectedProjectId(id)}
+                onClick={() => {
+                  setPageNumber(1)
+                  setSelectedProjectId(id)}}
                 className={cn(
                   "flex items-center gap-5 justify-between rounded-md hover:bg-[#22263e] cursor-pointer pl-14 pr-5 py-3 ",
                   selectedProjectId === id ? "bg-[#22263e]" : "bg-transparent"

@@ -93,7 +93,7 @@ const GeneratePageComponent  = () => {
     </div>
   )}
 </div>
-        <GenerateLeftSide />
+        <GenerateLeftSide setPageNumber={setPageNumber}/>
         {/* center*/}
         <div className="h-[calc(100vh-74px)] flex-1 overflow-y-auto hide-scrollbar pb-10">
           

@@ -1,7 +1,7 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/(router)/auth/callback/page": "app/(router)/auth/callback/page.js",
   "/(router)/auth/signup/page": "app/(router)/auth/signup/page.js",
+  "/(router)/auth/callback/page": "app/(router)/auth/callback/page.js",
   "/page": "app/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/(router)/dashboard/page": "app/(router)/dashboard/page.js",

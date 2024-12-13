@@ -40,7 +40,7 @@ const beautifulColors = [
 const STAR_ICON = [
   { icon: <Icons.OutlineStar />, text: "Outline", id: "outline" },
   { icon: <Icons.FillStar />, text: "Fill", id: "fill" },
-  { icon: <Icons.LinerColorStar />, text: "Linear color", id: "linear-color" },
+  { icon: <Icons.LinerColorStar />, text: "Lineal color", id: "lineal-color" },
   { icon: <Icons.HandDrownStar />, text: "HandDrawn", id: "hand-drawn" },
 ];
 

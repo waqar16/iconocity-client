@@ -76,7 +76,9 @@ const ProjectHistory = () => {
         >
           {data &&
             data
-              .slice(0, showMoreHistory ? data.length : 3)
+              // .slice(0, showMoreHistory ? data.length : 3)
+              .slice(0, 2)
+
               .map(({ history_id, history_date, name }) => (
                 <div
                   key={history_id}

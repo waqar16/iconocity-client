@@ -72,7 +72,7 @@ const UploadFile = ({
         <button
           onClick={() => setActiveTab("upload")}
           className={cn(
-            "px-4 py-2 rounded-lg border text-sm",
+            "image-generator px-4 py-2 rounded-lg border text-sm",
             activeTab === "upload"
               ? "bg-[#1C223F] text-white border-white"
               : "bg-transparent text-[#7C7F99] border-[#7C7F99]"
@@ -83,7 +83,7 @@ const UploadFile = ({
         <button
           onClick={() => setActiveTab("url")}
           className={cn(
-            "px-4 py-2 rounded-lg border text-sm",
+            "url-generator px-4 py-2 rounded-lg border text-sm",
             activeTab === "url"
               ? "bg-[#1C223F] text-white border-white"
               : "bg-transparent text-[#7C7F99] border-[#7C7F99]"

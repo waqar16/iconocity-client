@@ -23,7 +23,8 @@ export const UseUpdateIconsByQuery = () => {
       qc.invalidateQueries({ queryKey: ["project-history"] });
     },
     onError: (error: any) => {
-      // toast.error(error?.response?.data?.error || error?.message);
+      toast.error(error?.response?.data?.error || error?.message || error?.respone?.data?.query_response);
+
       console.log(error?.response?.data?.error || error?.message);
     },
   });

@@ -116,14 +116,13 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setEnableVari
   return (
     <div className="h-[calc(100vh-74px)] w-72 xl:w-80 2xl:w-96 bg-[#080e28] text-white rounded-tl-[24px] p-4 xl:p-5 overflow-y-auto hide-scrollbar">
       {/* color picker tab and select style */}
-
+   
       <ThemeColor
         setThemeColor={setThemeColor}
         themeColor={themeColor}
         setSelectedIconStyle={setSelectedIconStyle}
         selectedIconStyle={selectedIconStyle}
-      />
-
+      /> 
       {/* upload file tab and add link tab */}
       <div className="bg-colorPicker-gradient border  border-[#1C2037] rounded-2xl py-4 mt-4">
         {/* upload file tab */}

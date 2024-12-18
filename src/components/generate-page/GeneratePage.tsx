@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import ChatBot from "@/components/dashboard/generate/chat-bot";
 import GenerateLeftSide from "@/components/dashboard/generate/generate-left-side";
@@ -6,19 +6,20 @@ import GenerateRightSideBar from "@/components/dashboard/generate/generate-right
 import { ProjectProvider } from "@/context/ProjectProvider";
 import GenerateSvg from "@/components/dashboard/generate/generate-svg";
 import CreateVariations from "@/components/dashboard/generate/create-variations";
-import Cookies from 'js-cookie' 
+import Cookies from 'js-cookie';
 import { baseURL } from "@/lib/axiosClient";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
- 
-const GeneratePageComponent  = () => { 
+import Joyride, { Step } from "react-joyride";
+
+const GeneratePageComponent = () => {
   const searchParams = useSearchParams();
   const [code, setCode] = React.useState<string | null>(null);
   const [figmaToken, setFigmaToken] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const codeParam = searchParams.get('code');
+      const codeParam = searchParams.get("code");
       if (codeParam) {
         try {
           const response = await axios.post(
@@ -26,47 +27,130 @@ const GeneratePageComponent  = () => {
             { code: codeParam },
             {
               headers: {
-                Authorization: `Bearer ${Cookies.get('token')}`,
+                Authorization: `Bearer ${Cookies.get("token")}`,
               },
             }
           );
-          console.log('Response:', response.data.token_data.access_token);
+          console.log("Response:", response.data.token_data.access_token);
           setFigmaToken(response.data.token_data.access_token);
-          Cookies.set('figma_token',response.data.token_data.access_token)
+          Cookies.set("figma_token", response.data.token_data.access_token);
         } catch (error) {
-          console.error('Error fetching token:', error);
-        } finally { 
+          console.error("Error fetching token:", error);
         }
       }
     };
-  
-    fetchData(); 
+
+    fetchData();
   }, [searchParams]);
-   
-  const [activeIcon, setActiveIcon] = React.useState<{id: number;
+
+  const [activeIcon, setActiveIcon] = React.useState<{
+    id: number;
     url: string;
-    showMenu?:boolean;
-    } | null>(null);
+    showMenu?: boolean;
+  } | null>(null);
   const [pageNumber, setPageNumber] = React.useState(1);
   const [enableVariation, setEnableVariation] = React.useState<boolean>(false);
   const [showChat, setShowChat] = React.useState<boolean>(false);
-  const [isShowingSimilarIcons, setIsShowingSimilarIcons] = React.useState<boolean>(false);  
+  const [isShowingSimilarIcons, setIsShowingSimilarIcons] = React.useState<boolean>(false);
 
-  const [keywords, setKeywords] = React.useState<string[]>([])
+  const [keywords, setKeywords] = React.useState<string[]>([]);
   React.useEffect(() => {
-    // This code will only run on the client side
-    const savedKeywords = localStorage.getItem('#keywords');
+    const savedKeywords = localStorage.getItem("#keywords");
     if (savedKeywords) {
       setKeywords(JSON.parse(savedKeywords));
     }
   }, []);
+
+  const [runTour, setRunTour] = React.useState(false);
+
+  const steps: Step[] = [
+    {
+      target: ".project-list",
+      content: "Here you can find a list of all your active projects. Click on a project to view or edit it.",
+    },
+    {
+      target: ".project-history",
+      content: "This section shows your project history. Review and revisit your past work here.",
+    },
+    {
+      target: ".svg-generator",
+      content: "This section contains all your generated icons. If you are not viewing any icon, generate icons after uploading your first image.",
+    },
+    {
+      target: ".color-selector",
+      content: "This section allows you to select and customize colors for your design. Use it to choose the perfect color palette.",
+    },
+    {
+      target: ".shape-selector",
+      content: "Here you can find and choose different shapes for your icons. Browse and select to customize your icons effectively.",
+    },
+    {
+      target: ".image-generator",
+      content: "Upload your image file here to generate icons.",
+    },
+    {
+      target: ".url-generator",
+      content: "Provide a URL of an image or even a Figma file here to generate icons.",
+    },
+    {
+      target: ".chat-with-ai",
+      content: "Engage with our AI assistant here. Get answers to your questions and generate icons with our powerful AI model.",
+    },
+  ];
+
+  React.useEffect(() => {
+    // Check if the guide has already been shown
+    const guideShown = localStorage.getItem("guideShown");
+    if (!guideShown) {
+      setRunTour(true);
+    }
+  }, []);
+
+  const handleTourCallback = (data: any) => {
+    if (data.status === "finished" || data.status === "skipped") {
+      setRunTour(false);
+      localStorage.setItem("guideShown", "true"); // Mark the guide as shown
+    }
+  };
+
   return (
     <ProjectProvider>
-      <div className="relative flex gap-5 h-full  ">
-      <div className="rounded-full bg-white h-[70px] w-[70px] absolute z-[1000] bottom-10 right-10 flex flex-col items-center justify-center  ">
-  <svg 
+      <div className="relative flex gap-5 h-full max-h-[100vh] overflow-hidden">
+        <div className="rounded-full bg-white h-[70px] w-[70px] absolute z-[1000] bottom-10 right-10 flex flex-col items-center justify-center">
+          <Joyride
+            steps={steps}
+            run={runTour}
+            continuous
+            scrollToFirstStep
+            showProgress
+            showSkipButton
+            styles={{
+              options: {
+                zIndex: 10000,
+                backgroundColor: "#1C274C",
+                primaryColor: "#ffffff",
+                textColor: "#ffffff",
+                arrowColor: "#1C274C",
+              },
+              buttonClose: {
+                color: "#fff",
+              },
+              buttonBack: {
+                color: "#ccc",
+              },
+              buttonNext: {
+                color: "#ffffff",
+                backgroundColor: "#1C274C",
+              },
+              buttonSkip: {
+                color: "#ffffff",
+              },
+            }}
+            callback={handleTourCallback}
+          />
+       <svg 
     onClick={() => { setShowChat(true); }} 
-    className="cursor-pointer w-10 h-auto absolute z-10" 
+    className="chat-with-ai cursor-pointer w-10 h-auto absolute z-10" 
     viewBox="0 0 24 24" 
     fill="none" 
     xmlns="http://www.w3.org/2000/svg">
@@ -85,26 +169,47 @@ const GeneratePageComponent  = () => {
         Generate with AI
       </textPath>
     </text>
-  </svg>
+  </svg> 
 </div>
-  {showChat && (
+{showChat && (
     <div className="flex flex-row items-center relative">
       <ChatBot setShowChat={setShowChat} keywords={keywords} setPageNumber={setPageNumber} />
     </div>
   )}
-</div>
-        <GenerateLeftSide setPageNumber={setPageNumber}/>
-        {/* center*/}
-        <div className="h-[calc(100vh-74px)] flex-1 overflow-y-auto hide-scrollbar pb-10">
-          
-          <GenerateSvg isShowingSimilarIcons = {isShowingSimilarIcons} setIsShowingSimilarIcons={setIsShowingSimilarIcons} activeIcon={activeIcon} setActiveIcon={setActiveIcon} pageNumber={pageNumber} setPageNumber={setPageNumber} setEnableVariation={setEnableVariation}/>
-          {enableVariation && <CreateVariations activeIcon={activeIcon} setPageNumber={setPageNumber} enableVariation = {enableVariation}/>}
-          {/* <ChatBot  keywords={keywords} setPageNumber={setPageNumber}/> */}
         </div>
-        <GenerateRightSideBar setEnableVariation={setEnableVariation}  setIsShowingSimilarIcons={setIsShowingSimilarIcons} setKeywords={setKeywords} setPageNumber={setPageNumber}/>
+        <GenerateLeftSide setPageNumber={setPageNumber} />
+        {/* center */}
+        <div className="h-[calc(100vh-74px)] flex-1 overflow-y-auto hide-scrollbar pb-10">
+          <div className="svg-generator">
+            <GenerateSvg
+              isShowingSimilarIcons={isShowingSimilarIcons}
+              setIsShowingSimilarIcons={setIsShowingSimilarIcons}
+              activeIcon={activeIcon}
+              setActiveIcon={setActiveIcon}
+              pageNumber={pageNumber}
+              setPageNumber={setPageNumber}
+              setEnableVariation={setEnableVariation}
+            />
+          </div>
+          {enableVariation && (
+            <CreateVariations
+              activeIcon={activeIcon}
+              setPageNumber={setPageNumber}
+              enableVariation={enableVariation}
+            />
+          )}
+        </div>
+        <GenerateRightSideBar
+          setEnableVariation={setEnableVariation}
+          setIsShowingSimilarIcons={setIsShowingSimilarIcons}
+          setKeywords={setKeywords}
+          setPageNumber={setPageNumber}
+        />
       </div>
     </ProjectProvider>
   );
 };
 
 export default GeneratePageComponent;
+ 
+ 

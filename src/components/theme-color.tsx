@@ -62,12 +62,14 @@ const ThemeColor: React.FC<ThemeColorProps> = ({
 
   // Toggle visibility handlers
   const toggleColors = () => {
-    setIsColorVisible((prev) => !prev);
+    // setIsColorVisible((prev) => !prev);
+    setIsColorVisible(true)
     setIsShapeVisible(false); // Hide shapes when showing colors
   };
 
   const toggleShapes = () => {
-    setIsShapeVisible((prev) => !prev);
+    // setIsShapeVisible((prev) => !prev);
+    setIsShapeVisible(true)
     setIsColorVisible(false); // Hide colors when showing shapes
   };
 
@@ -80,24 +82,30 @@ const ThemeColor: React.FC<ThemeColorProps> = ({
     <div className="bg-colorPicker-gradient border border-[#1C2037] rounded-2xl p-3 xl:p-5">
       {/* Toggle Buttons */}
       <div className="flex justify-between items-center mb-5">
+      <div className="color-selector">
+
         <Button
           onClick={toggleColors}
           className={cn(
-            "px-4 py-2 rounded-lg",
+            "px-2 py-2 rounded-lg mr-1",
             isColorVisible ? "bg-[#080e28] text-white" : "bg-[#1C223F] text-[#BAC0DD]"
           )}
         >
           Select Colors
         </Button>
+</div>
+<div className="shape-selector">
+
         <Button
           onClick={toggleShapes}
           className={cn(
-            "px-4 py-2 rounded-lg",
+            "px-2 py-2 rounded-lg ml-1",
             isShapeVisible ? "bg-[#080e28] text-white" : "bg-[#1C223F] text-[#BAC0DD]"
           )}
         >
           Select Shapes
         </Button>
+</div>
       </div>
 
       {/* Color Picker */}

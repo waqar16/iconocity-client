@@ -4,8 +4,9 @@ import { CircleHelp, X } from "lucide-react";
 import { Icons } from "@/components/icons";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/input"; 
 
+import Tooltip from '@mui/material/Tooltip';
 const UploadFile = ({
   onFileUpload,
   uploadedFiles,
@@ -64,7 +65,20 @@ const UploadFile = ({
       {/* Title */}
       <div className="flex items-center justify-between px-4">
         <h1 className="text-sm text-[#BAC0DD]">Upload Design</h1>
+      <Tooltip title="Upload Your File or File Url on this section to generate icons"
+       placement="top"
+      sx={{ 
+        tooltip: { 
+          padding: "2px 4px", // Adjust padding inside the tooltip
+          fontSize: "12px",  // Optional: Smaller text
+        },
+        popper: {
+          margin: "0px",     // Remove extra spacing
+        },
+      }}>
+      
         <CircleHelp className="w-4 h-4 text-[#7C7F99]" />
+    </Tooltip>
       </div>
 
       {/* Toggler */}

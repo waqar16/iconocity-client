@@ -11,11 +11,16 @@ import { baseURL } from "@/lib/axiosClient";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import Joyride, { Step } from "react-joyride";
-
+export interface IMessage {
+  id: string;
+  content: string;
+  isUser: boolean;
+}
 const GeneratePageComponent = () => {
   const searchParams = useSearchParams();
   const [code, setCode] = React.useState<string | null>(null);
   const [figmaToken, setFigmaToken] = React.useState<string | null>(null);
+  const [messages, setMessages] = React.useState<IMessage[]>([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -172,8 +177,8 @@ const GeneratePageComponent = () => {
   </svg> 
 </div>
 {showChat && (
-    <div className="flex flex-row items-center relative">
-      <ChatBot setShowChat={setShowChat} keywords={keywords} setPageNumber={setPageNumber} />
+    <div className={`flex flex-row items-center relative`}>
+      <ChatBot setShowChat={setShowChat} keywords={keywords} setPageNumber={setPageNumber} messages={messages} setMessages={setMessages}/>
     </div>
   )}
         </div>

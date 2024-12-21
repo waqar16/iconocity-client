@@ -10,6 +10,7 @@ import { UseUploadImage } from "@/hooks/mutation/useUploadImage";
 import AddFigmaLink from "./add-figma-link";
 import { cn } from "@/lib/utils";
 import { ProjectContext } from "@/context/ProjectProvider";
+import { toast } from "sonner";
 interface GenerateRightSideBarProps {
   setPageNumber: React.Dispatch<React.SetStateAction<number>>;
   setKeywords: React.Dispatch<React.SetStateAction<string[]>>;
@@ -78,6 +79,11 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setEnableVari
             setIsShowingSimilarIcons(false)
             setEnableVariation(false)
           },
+          onError(err){
+            if(err.response.data.error){
+              toast.error(err.response.data.error)
+            } 
+          }
         }
       );
       setKeywords(data2?.attributes?.description.split(",").slice(1,4))
@@ -97,6 +103,11 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setEnableVari
             setIsShowingSimilarIcons(false)
             setEnableVariation(false)
           },
+          onError(err){
+            if(err.response.data.error){
+              toast.error(err.response.data.error)
+            } 
+          }
         });
         // setKeywords(link_api?.attributes?.keywords.slice(1,4))
         setKeywords(link_api?.attributes?.description.split(",").slice(1,4))

@@ -8,7 +8,7 @@ const FigmaLinkApi = async ({ screen_link, icon_color, icon_style }: any) => {
     figma_token: Cookies.get('figma_token'),
     icon_color,
     icon_style,
-  });
+  }); 
   return res.data;
 };
 
@@ -19,9 +19,10 @@ export const UseFigmaLink = () => {
     onSuccess: (data) => {
       toast.success(data.success || "Url has been processed Successfully!");
       qc.invalidateQueries({ queryKey: ["get-project-list"] });
+      console.log(data)
     },
     onError: (error: any) => {
-      console.log(error?.response?.data?.oauth_url)
+      console.log(error)
       if (error?.response?.data?.oauth_url) {
         toast(error?.response?.data?.error, {
           action: {

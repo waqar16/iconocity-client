@@ -5,6 +5,8 @@ import { baseURL } from '@/lib/axiosClient';
 import axios from 'axios';
 import Cookies from 'js-cookie'
 import { Url } from 'next/dist/shared/lib/router/router';
+import { CircleHelp } from 'lucide-react';
+import { Tooltip } from '@mui/material';
 interface CreateVariationProps {
   setPageNumber: Dispatch<SetStateAction<number>>;
   enableVariation:boolean
@@ -54,7 +56,24 @@ const CreateVariations: React.FC<CreateVariationProps> = ({ activeIcon,setPageNu
   };
 
   return (
-    <div className="relative bg-chatbot-gradient border border-[#1C2037] rounded-2xl px-8 py-5 mt-5">
+    <div className="relative bg-chatbot-gradient border border-[#1C2037] rounded-2xl px-8 py-5 mt-5 pb-10">
+         <div className="w-full flex flex-row items-center justify-end mb-2">
+    
+    <Tooltip title="You can create different variants of the selected icon here"
+     placement="top"
+    sx={{ 
+      tooltip: { 
+        padding: "2px 4px",  
+        fontSize: "12px", 
+      },
+      popper: {
+        margin: "0px", 
+      },
+    }}>
+    
+      <CircleHelp className="w-4 h-4 text-[#7C7F99]" />
+  </Tooltip>
+ </div>
       <div className="w-full flex flex-row items-center">
         <h1 className="text-white text-sm">No. of Variations: {selectedVariation}</h1>
         <DropdownMenu.Root>

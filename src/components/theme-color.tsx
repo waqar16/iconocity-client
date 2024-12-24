@@ -3,6 +3,8 @@ import { cn } from "@/lib/utils";
 import { SketchPicker } from "react-color";
 import { Button } from "./ui/button";
 import { Icons } from "./icons";
+import { Tooltip } from "@mui/material";
+import { CircleHelp } from "lucide-react";
 
 // Color and shape data
 export const defaultColor = [
@@ -79,9 +81,27 @@ const ThemeColor: React.FC<ThemeColorProps> = ({
   };
 
   return (
-    <div className="bg-colorPicker-gradient border border-[#1C2037] rounded-2xl p-3 xl:p-5">
+    <div className="bg-colorPicker-gradient border border-[#1C2037] rounded-2xl px-3 pb-3 pt-1 xl:px-5 xl:pb-5 xl:pt-3">
       {/* Toggle Buttons */}
+      <div className="w-full flex flex-row items-center justify-end mb-2">
+    
+    <Tooltip title="Select Your Icon properties from this section"
+     placement="top"
+    sx={{ 
+      tooltip: { 
+        padding: "2px 4px", // Adjust padding inside the tooltip
+        fontSize: "12px",  // Optional: Smaller text
+      },
+      popper: {
+        margin: "0px",     // Remove extra spacing
+      },
+    }}>
+    
+      <CircleHelp className="w-4 h-4 text-[#7C7F99]" />
+  </Tooltip>
+ </div>
       <div className="flex justify-between items-center mb-5">
+     
       <div className="color-selector">
 
         <Button

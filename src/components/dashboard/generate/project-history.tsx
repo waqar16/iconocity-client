@@ -137,13 +137,13 @@
 // };
 
 // export default ProjectHistory;
-import {  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import {  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Tooltip } from "@mui/material";
  
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { ChevronDown, Clock4, LoaderIcon } from "lucide-react";
+import { ChevronDown, CircleHelp, Clock4, LoaderIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProjectContext } from "@/context/ProjectProvider";
 import { UseGetProjectHistoryList } from "@/hooks/query/useGetProjectHistoryList";
@@ -308,12 +308,29 @@ const ProjectHistory = () => {
   
   return (
     <div className=" pb-7 px-6 mt-5 2xl:mt-10">
-      <div className="flex items-center justify-between text-[#BAC0DD]">
+       <div className="w-full flex flex-row items-center justify-between">
+       <div className="flex items-center justify-between text-[#BAC0DD]">
         <h2 className="flex items-center gap-2 text-base font-normal px-5">
           <Clock4 className="w-4 h-auto" />
           History
         </h2>
       </div>
+      <Tooltip title="Here you will see your Working History. You can Edit History name on clicking its label"
+       placement="top"
+      sx={{ 
+        tooltip: { 
+          padding: "2px 4px", // Adjust padding inside the tooltip
+          fontSize: "12px",  // Optional: Smaller text
+        },
+        popper: {
+          margin: "0px",     // Remove extra spacing
+        },
+      }}>
+      
+        <CircleHelp className="w-4 h-4 text-[#7C7F99]" />
+    </Tooltip>
+   </div>
+      
 
       {isLoading ? (
         <div className="py-16 flex justify-center">

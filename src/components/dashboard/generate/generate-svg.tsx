@@ -4,12 +4,13 @@ import { Icons } from "@/components/icons";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ProjectContext } from "@/context/ProjectProvider";
 import { UseGetHistoryByHistoryId } from "@/hooks/query/useGetHistoryByHistoryId";
-import { ChevronLeft, ChevronRight, LoaderIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight, CircleHelp, LoaderIcon } from "lucide-react";
 import Link from "next/link";
 import { baseURL } from "@/lib/axiosClient";
 import { cn } from "@/lib/utils";
 import { UseFetchIconById } from "@/hooks/mutation/useSimilarIconByFamily";
 import axios from "axios";
+import { Tooltip } from "@mui/material";
 type ProjectSvg = {
   id: number;
   url: string;
@@ -146,6 +147,23 @@ const GenerateSvg:React.FC<GenerateSvgProps> = ({isShowingSimilarIcons,setIsShow
   return (
     <div className="bg-[#0E142D] border border-[#1C2037] rounded-2xl px-8 py-5 ">
       {/* download tab */}
+      <div className="w-full flex flex-row items-center justify-end mb-2">
+    
+    <Tooltip title="This Section contains your generated icons"
+     placement="top"
+    sx={{ 
+      tooltip: { 
+        padding: "2px 4px", // Adjust padding inside the tooltip
+        fontSize: "12px",  // Optional: Smaller text
+      },
+      popper: {
+        margin: "0px",     // Remove extra spacing
+      },
+    }}>
+    
+      <CircleHelp className="w-4 h-4 text-[#7C7F99]" />
+  </Tooltip>
+ </div>
       <div className="flex flex-col items-center my-2 w-full">
         <div className="flex flex-row items-center justify-center">
         <h1 className="text-white font-bold text-3xl">{'Welcome'}</h1>

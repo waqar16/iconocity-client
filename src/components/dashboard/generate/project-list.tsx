@@ -5,7 +5,8 @@ import { ProjectContext } from "@/context/ProjectProvider";
 import { UseChangeProjectName } from "@/hooks/mutation/useChangeProjectName";
 import { UseGetProjectList } from "@/hooks/query/useGetProjectList";
 import { cn } from "@/lib/utils";
-import { ChevronDown, LoaderIcon, SquareCheckBig } from "lucide-react";
+import { Tooltip } from "@mui/material";
+import { ChevronDown, CircleHelp, LoaderIcon, SquareCheckBig } from "lucide-react";
 import React, { useContext, useEffect, useRef, useState } from "react";
 
 interface GenerateLeftSideBarProps {
@@ -63,11 +64,26 @@ const ProjectList:React.FC<GenerateLeftSideBarProps> = ({setPageNumber}) => {
   return (
     <div className="border-b border-[#1C2037] pb-4 2xl:pb-7 px-6 mt-5 2xl:mt-10">
       {/* title */}
-      <h2 className="flex items-center gap-2 text-base text-[#BAC0DD] font-medium px-5">
+   <div className="w-full flex flex-row items-center justify-between">
+   <h2 className="flex items-center gap-2 text-base text-[#BAC0DD] font-medium px-5">
         <Icons.file />
         Your projects
       </h2>
-
+      <Tooltip title="Here you will see your projects Separated based o eachh image you uploaded"
+       placement="top"
+      sx={{ 
+        tooltip: { 
+          padding: "2px 4px", // Adjust padding inside the tooltip
+          fontSize: "12px",  // Optional: Smaller text
+        },
+        popper: {
+          margin: "0px",     // Remove extra spacing
+        },
+      }}>
+      
+        <CircleHelp className="w-4 h-4 text-[#7C7F99]" />
+    </Tooltip>
+   </div>
       {/* project list container */}
       {isLoading ? (
         <div className="py-16 flex justify-center">

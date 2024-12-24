@@ -69,7 +69,7 @@ const ProjectList:React.FC<GenerateLeftSideBarProps> = ({setPageNumber}) => {
         <Icons.file />
         Your projects
       </h2>
-      <Tooltip title="Here you will see your projects Separated based o eachh image you uploaded"
+      <Tooltip title="View your projects here, separated based on each image you uploaded."
        placement="top"
       sx={{ 
         tooltip: { 

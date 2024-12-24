@@ -59,7 +59,7 @@ const CreateVariations: React.FC<CreateVariationProps> = ({ activeIcon,setPageNu
     <div className="relative bg-chatbot-gradient border border-[#1C2037] rounded-2xl px-8 py-5 mt-5 pb-10">
          <div className="w-full flex flex-row items-center justify-end mb-2">
     
-    <Tooltip title="You can create different variants of the selected icon here"
+    <Tooltip  title="Create different variants of the selected icon here"
      placement="top"
     sx={{ 
       tooltip: { 

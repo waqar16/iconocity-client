@@ -177,7 +177,7 @@ const ChatBot: React.FC<ChatBotProps> = ({
       {/* messages */}
       {messages.length > 0 ? (
         <div
-          className="min-h-[300px] space-y-5 mt-9  overflow-y-auto custom-scrollbar"
+          className="min-h-[300px] max-h-[300px] space-y-5 mt-9  overflow-y-auto custom-scrollbar"
           ref={containerRef}
         >
           {messages.map((msg) => (

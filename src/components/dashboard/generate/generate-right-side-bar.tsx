@@ -102,11 +102,15 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setEnableVari
             setSelectedIconStyle("");
             setIsShowingSimilarIcons(false)
             setEnableVariation(false)
-          },
+          }
+
+          ,
           onError(err){
-            if(err.response.data.error){
+            if (err?.response?.data?.error && !err?.response?.data?.oauth_url) {
               toast.error(err.response.data.error)
-            } 
+               
+            }
+             
           }
         });
         // setKeywords(link_api?.attributes?.keywords.slice(1,4))

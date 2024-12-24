@@ -8,7 +8,7 @@ const FigmaLinkApi = async ({ screen_link, icon_color, icon_style }: any) => {
     figma_token: Cookies.get('figma_token'),
     icon_color,
     icon_style,
-  }); 
+  });
   return res.data;
 };
 
@@ -35,6 +35,7 @@ export const UseFigmaLink = () => {
         })
         // window.open(error?.response?.data?.oauth_url, "_blank");
       }
+
     },
 
 

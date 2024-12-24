@@ -85,7 +85,7 @@ const ThemeColor: React.FC<ThemeColorProps> = ({
       {/* Toggle Buttons */}
       <div className="w-full flex flex-row items-center justify-end mb-2">
     
-    <Tooltip title="Select Your Icon properties from this section"
+    <Tooltip title="Select your icon properties from this section"
      placement="top"
     sx={{ 
       tooltip: { 

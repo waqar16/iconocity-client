@@ -315,8 +315,7 @@ const ProjectHistory = () => {
           History
         </h2>
       </div>
-      <Tooltip title="Here you will see your Working History. You can Edit History name on clicking its label"
-       placement="top"
+      <Tooltip title="View your working history here. You can edit the history name by clicking its label." placement="top" 
       sx={{ 
         tooltip: { 
           padding: "2px 4px", // Adjust padding inside the tooltip

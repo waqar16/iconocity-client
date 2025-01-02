@@ -127,6 +127,11 @@ const GeneratePageComponent = () => {
             });
         }
     };
+    React.useEffect(() => {
+      if (enableVariation) {
+        handleScrollToBottom();
+      }
+    }, [enableVariation]);
   return (
     <ProjectProvider>
       <div className="relative flex gap-5 h-full max-h-[100vh] overflow-hidden">

@@ -247,7 +247,7 @@ const GenerateSvg:React.FC<GenerateSvgProps> = ({handleScrollToBottom,isShowingS
                         setEnableVariation(true);
                         setShowMenu(false) 
                         setActiveIcon({id: icon.id ||icon.similar_icon_id ||0,url:icon.url})
-                        handleScrollToBottom()
+                        // handleScrollToBottom()
 
                       }}
                       className="w-full mt-[2px] hover:bg-gray-400 hover:text-white p-2 rounded-md bg-gray-200 text-xs font-bold"

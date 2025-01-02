@@ -117,7 +117,16 @@ const GeneratePageComponent = () => {
       localStorage.setItem("guideShown", "true"); // Mark the guide as shown
     }
   };
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
 
+    const handleScrollToBottom = () => {
+        if (containerRef.current) {
+            containerRef.current.scrollTo({
+                top: containerRef.current.scrollHeight,
+                behavior: "smooth", // For smooth scrolling
+            });
+        }
+    };
   return (
     <ProjectProvider>
       <div className="relative flex gap-5 h-full max-h-[100vh] overflow-hidden">
@@ -184,7 +193,7 @@ const GeneratePageComponent = () => {
         </div>
         <GenerateLeftSide setPageNumber={setPageNumber} />
         {/* center */}
-        <div className="h-[calc(100vh-74px)] flex-1 overflow-y-auto hide-scrollbar pb-10">
+        <div className="h-[calc(100vh-74px)] flex-1 overflow-y-auto hide-scrollbar pb-10" ref={containerRef}>
           <div className="svg-generator">
             <GenerateSvg
               isShowingSimilarIcons={isShowingSimilarIcons}
@@ -194,6 +203,7 @@ const GeneratePageComponent = () => {
               pageNumber={pageNumber}
               setPageNumber={setPageNumber}
               setEnableVariation={setEnableVariation}
+              handleScrollToBottom={handleScrollToBottom}
             />
           </div>
           {enableVariation && (

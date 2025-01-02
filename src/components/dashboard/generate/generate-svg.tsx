@@ -23,9 +23,10 @@ type GenerateSvgProps = {
   activeIcon:ProjectSvg | null;
   setActiveIcon:Dispatch<SetStateAction<ProjectSvg | null>>;
   setIsShowingSimilarIcons:Dispatch<SetStateAction<boolean>>;
-  isShowingSimilarIcons:boolean
+  isShowingSimilarIcons:boolean;
+  handleScrollToBottom:() => void
 };
-const GenerateSvg:React.FC<GenerateSvgProps> = ({isShowingSimilarIcons,setIsShowingSimilarIcons,activeIcon,setActiveIcon,pageNumber,setPageNumber,setEnableVariation}) => {
+const GenerateSvg:React.FC<GenerateSvgProps> = ({handleScrollToBottom,isShowingSimilarIcons,setIsShowingSimilarIcons,activeIcon,setActiveIcon,pageNumber,setPageNumber,setEnableVariation}) => {
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
@@ -226,7 +227,7 @@ const GenerateSvg:React.FC<GenerateSvgProps> = ({isShowingSimilarIcons,setIsShow
                       }}
                       className="w-full hover:bg-gray-400 hover:text-white p-2 rounded-md bg-gray-200 text-xs font-bold"
                     >
-                      {isFetching ? "Searching..." : "Search for similar icon"}
+                      {isFetching ? "Searching..." : "Search icon pack"}
                     </button>
                     <button
                       onClick={() => { 
@@ -239,19 +240,19 @@ const GenerateSvg:React.FC<GenerateSvgProps> = ({isShowingSimilarIcons,setIsShow
                            }}
                       className="w-full mt-[2px] hover:bg-gray-400 hover:text-white p-2 rounded-md bg-gray-200 text-xs font-bold"
                     >
-                      {"Download Icon"}
+                      {"Freepik Url"}
                     </button>
                     <button
                       onClick={() => {
                         setEnableVariation(true);
                         setShowMenu(false) 
                         setActiveIcon({id: icon.id ||icon.similar_icon_id ||0,url:icon.url})
-
+                        handleScrollToBottom()
 
                       }}
                       className="w-full mt-[2px] hover:bg-gray-400 hover:text-white p-2 rounded-md bg-gray-200 text-xs font-bold"
                     >
-                      {"Variations"}
+                      {"See Variations to Download"}
                     </button>
                     <div className="absolute left-7 bottom-[-6px] w-0 h-0 border-l-[8px] border-r-[8px] border-t-[8px] border-t-white border-l-transparent border-r-transparent"></div>
                   </div>

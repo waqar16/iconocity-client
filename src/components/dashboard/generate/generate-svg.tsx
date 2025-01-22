@@ -255,10 +255,8 @@ const GenerateSvg: React.FC<GenerateSvgProps> = ({
                     console.log(activeIcon?.id);
                     console.log(icon?.id);
                     if (activeIcon?.id === (icon.id || icon.similar_icon_id)) {
-                      // If the same icon is clicked again, toggle the menu visibility
                       setShowMenu(!showMenu);
                     } else {
-                      // If a different icon is clicked, update the active icon and show the menu
                       setActiveIcon({
                         id: icon.id || icon?.similar_icon_id || 0,
                         url: icon.url,
@@ -276,6 +274,15 @@ const GenerateSvg: React.FC<GenerateSvgProps> = ({
                       className={`   flex flex-col items-center w-4 h-4 bg-black rounded-full absolute left-[100%] top-[-120px] z-[4000]`}
                     >
                       <div className="bg-white rounded-xl p-4 relative h-auto w-[180px] flex flex-col items-center justify-center">
+                        <div className="flex flex-row items-center justify-start w-full my-1">
+                          <p className="text-sm font-normal mr-2">
+                            Provided by
+                          </p>
+                          <img
+                            src="/generate/svg/freepik-logo.svg"
+                            className="w-8  h-auto    ml-2 "
+                          />
+                        </div>
                         <button
                           onClick={() => {
                             handleSearchForSimilarIcon(

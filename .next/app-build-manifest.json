@@ -41,6 +41,22 @@
       "static/chunks/main-app-aef7718b4fedb06d.js",
       "static/chunks/app/page-00c963f2a092c1f1.js"
     ],
+    "/(router)/dashboard/page": [
+      "static/chunks/webpack-3e7b87d9347b8da9.js",
+      "static/chunks/fd9d1056-8096db71882368b6.js",
+      "static/chunks/23-1a586794e2be98d3.js",
+      "static/chunks/main-app-aef7718b4fedb06d.js",
+      "static/chunks/app/(router)/dashboard/page-19096122a22ff72d.js"
+    ],
+    "/(router)/dashboard/layout": [
+      "static/chunks/webpack-3e7b87d9347b8da9.js",
+      "static/chunks/fd9d1056-8096db71882368b6.js",
+      "static/chunks/23-1a586794e2be98d3.js",
+      "static/chunks/main-app-aef7718b4fedb06d.js",
+      "static/chunks/242-c89a853f75f67594.js",
+      "static/chunks/198-006e27b8139122c2.js",
+      "static/chunks/app/(router)/dashboard/layout-ff866e4851f33d1f.js"
+    ],
     "/(router)/dashboard/generate/page": [
       "static/chunks/webpack-3e7b87d9347b8da9.js",
       "static/chunks/fd9d1056-8096db71882368b6.js",
@@ -52,23 +68,7 @@
       "static/chunks/467-a4476b3aa3e00b0f.js",
       "static/chunks/261-ea75e9e0aa2b0a2b.js",
       "static/chunks/830-73797247cd78ca3a.js",
-      "static/chunks/app/(router)/dashboard/generate/page-9d04d5bc200a0609.js"
-    ],
-    "/(router)/dashboard/layout": [
-      "static/chunks/webpack-3e7b87d9347b8da9.js",
-      "static/chunks/fd9d1056-8096db71882368b6.js",
-      "static/chunks/23-1a586794e2be98d3.js",
-      "static/chunks/main-app-aef7718b4fedb06d.js",
-      "static/chunks/242-c89a853f75f67594.js",
-      "static/chunks/198-006e27b8139122c2.js",
-      "static/chunks/app/(router)/dashboard/layout-ff866e4851f33d1f.js"
-    ],
-    "/(router)/dashboard/page": [
-      "static/chunks/webpack-3e7b87d9347b8da9.js",
-      "static/chunks/fd9d1056-8096db71882368b6.js",
-      "static/chunks/23-1a586794e2be98d3.js",
-      "static/chunks/main-app-aef7718b4fedb06d.js",
-      "static/chunks/app/(router)/dashboard/page-19096122a22ff72d.js"
+      "static/chunks/app/(router)/dashboard/generate/page-3be43501c9fa200d.js"
     ]
   }
 }

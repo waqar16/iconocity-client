@@ -1,43 +1,54 @@
-import { Upload } from "lucide-react";
-
+"use client";
+import { motion } from "framer-motion";
 export const Icons = {
   file: (props: any) => {
     return (
-      <svg
+      <motion.svg
         width="16"
         height="16"
         viewBox="0 0 16 16"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        {...props}
+        {...props} // Spread any props passed from parent component
+        animate={{
+          scale: [1, 1.5, 1], // Animate scaling between 1 and 1.2
+        }}
+        transition={{
+          repeat: Infinity, // Repeat infinitely
+          repeatType: "loop", // Loop the animation
+          type: "spring", // Smooth spring motion
+          stiffness: 80, // Adjust stiffness for bounciness
+          damping: 20, // Adjust damping for slowing down
+          duration: 2, // Duration of each cycle
+        }}
       >
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M9.8252 1.84108H5.38987C4.0032 1.83575 2.86654 2.94108 2.83387 4.32708V11.4691C2.8032 12.8778 3.91987 14.0451 5.32854 14.0764C5.3492 14.0764 5.3692 14.0771 5.38987 14.0764H10.7159C12.1119 14.0198 13.2119 12.8664 13.2019 11.4691V5.35842L9.8252 1.84108Z"
           stroke="#BAC0DD"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M9.65009 1.83325V3.77259C9.65009 4.71925 10.4154 5.48659 11.3621 5.48925H13.1988"
           stroke="#BAC0DD"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M9.52541 10.2389H5.92542"
           stroke="#BAC0DD"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M8.16214 7.73714H5.9248"
           stroke="#BAC0DD"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
-      </svg>
+      </motion.svg>
     );
   },
   SquareUpLeft: (props: any) => (

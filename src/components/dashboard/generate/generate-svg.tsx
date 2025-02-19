@@ -1,3 +1,4 @@
+"use client";
 import React, {
   Dispatch,
   SetStateAction,
@@ -5,6 +6,9 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { Icons } from "@/components/icons";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -50,6 +54,7 @@ const GenerateSvg: React.FC<GenerateSvgProps> = ({
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [downloadingComplete, setDownloadingComplete] = useState(false);
 
   const [similarPageNumber, setSimilarPageNumber] = useState(1);
   const [totalSimilarPages, setTotalSimilarPages] = useState(0);
@@ -196,7 +201,7 @@ const GenerateSvg: React.FC<GenerateSvgProps> = ({
       <div className="flex flex-col items-center my-2 w-full">
         <div className="flex flex-row items-center justify-center">
           <h1 className="text-white font-bold text-3xl">{"Welcome"}</h1>
-          <svg
+          {/* <svg
             viewBox="0 0 1024 1024"
             className="w-12 h-12"
             version="1.1"
@@ -218,7 +223,39 @@ const GenerateSvg: React.FC<GenerateSvgProps> = ({
               d="M661.5 423.4c0-20.7-16.9-37.6-37.9-37.6-20.9 0-37.8 16.8-37.8 37.6 0 20.7 16.9 37.6 37.8 37.6 21 0 37.9-16.8 37.9-37.6zM433.1 423.4c0-20.7-16.9-37.6-37.9-37.6-20.9 0-37.8 16.8-37.8 37.6 0 20.7 16.9 37.6 37.8 37.6 21 0 37.9-16.8 37.9-37.6zM597.5 531.6c-9.7-3.9-20.7 0.7-24.7 10.3-0.2 0.4-16.2 38-63.4 38-48.6 0-61.6-32.8-62.9-36.8-3.2-9.8-13.9-15.1-23.7-12-10 3.1-15.5 13.7-12.3 23.6 0.8 2.6 21 62.8 98.9 62.8 72.3 0 97.4-58.8 98.4-61.3 4-9.7-0.6-20.6-10.3-24.6zM303.2 502.4c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3-3.3-7.3-7.3-7.3zM336.8 502.4c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0.1-4-3.2-7.3-7.3-7.3zM320 525.1c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0-4.1-3.2-7.3-7.3-7.3zM353.7 525.1c-4 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0-4.1-3.3-7.3-7.3-7.3zM336.8 546.9c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0.1-4-3.2-7.3-7.3-7.3zM374.8 502.4c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3-3.2-7.3-7.3-7.3zM654.7 502.4c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0.1-4-3.2-7.3-7.3-7.3zM688.4 502.4c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3-3.2-7.3-7.3-7.3zM671.6 525.1c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0-4.1-3.3-7.3-7.3-7.3zM705.3 525.1c-4 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0-4.1-3.3-7.3-7.3-7.3zM688.4 546.9c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3-3.2-7.3-7.3-7.3zM726.4 502.4c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3-3.3-7.3-7.3-7.3z"
               fill="#211F1E"
             />
-          </svg>
+          </svg> */}
+          <motion.svg
+            viewBox="0 0 1024 1024"
+            className="w-12 h-12"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            animate={{ scale: 1.2 }}
+          >
+            <motion.path
+              d="M506.8 185.8c-164.6 0-298.1 132.4-298.1 295.8 0 104.8 55 196.8 137.8 249.3L288.7 825l137.1-58.8a300.6 300.6 0 0 0 81 11.1c164.6 0 298.1-132.4 298.1-295.8S671.4 185.8 506.8 185.8z"
+              fill="#F68F3B"
+              animate={{
+                pathLength: [0, 1],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+            <motion.path
+              d="M703.9 361.5c-4.9 0-9.7-2.5-12.3-7.1-31.7-54.8-90.6-73.2-91.2-73.4-7.5-2.3-11.7-10.1-9.4-17.6 2.3-7.4 10.2-11.6 17.6-9.4 2.8 0.8 70.1 21.5 107.6 86.3 3.9 6.7 1.6 15.4-5.2 19.2-2.2 1.4-4.7 2-7.1 2zM551.7 268.8c-1.2 0-2.5-0.1-3.7-0.5-21.3-5.7-38.9-3.2-39.1-3.2-7.8 1.2-15-4.1-16.1-11.8-1.2-7.7 4.1-14.8 11.8-16 1-0.1 23.4-3.5 50.8 3.8 7.6 2 12 9.8 10 17.3-1.7 6.2-7.4 10.4-13.7 10.4z"
+              fill="#FFFFFF"
+            />
+            <motion.path
+              d="M506.8 167c-174.8 0-317 141.1-317 314.6 0 101.7 48.7 195.7 131.3 254.9l-48.6 78.9c-4.2 6.9-3.5 15.8 1.8 21.9 3.7 4.3 9 6.6 14.4 6.6 2.4 0 4.8-0.5 7.1-1.4L427 786c26.1 6.7 52.9 10.1 79.8 10.1 174.8 0 317-141.1 317-314.6 0-173.4-142.2-314.5-317-314.5z m0 591.6c-25.5 0-51.1-3.5-75.9-10.4-4.1-1.2-8.4-0.9-12.3 0.7l-84.4 37.5 28.4-45.8c5.3-8.7 2.6-20-6-25.5-80.8-51.3-129-138.6-129-233.5 0-152.7 125.2-277 279.1-277s279.1 124.3 279.1 277c0.1 152.7-125.1 277-279 277z"
+              fill="#211F1E"
+            />
+            <motion.path
+              d="M661.5 423.4c0-20.7-16.9-37.6-37.9-37.6-20.9 0-37.8 16.8-37.8 37.6 0 20.7 16.9 37.6 37.8 37.6 21 0 37.9-16.8 37.9-37.6zM433.1 423.4c0-20.7-16.9-37.6-37.9-37.6-20.9 0-37.8 16.8-37.8 37.6 0 20.7 16.9 37.6 37.8 37.6 21 0 37.9-16.8 37.9-37.6zM597.5 531.6c-9.7-3.9-20.7 0.7-24.7 10.3-0.2 0.4-16.2 38-63.4 38-48.6 0-61.6-32.8-62.9-36.8-3.2-9.8-13.9-15.1-23.7-12-10 3.1-15.5 13.7-12.3 23.6 0.8 2.6 21 62.8 98.9 62.8 72.3 0 97.4-58.8 98.4-61.3 4-9.7-0.6-20.6-10.3-24.6zM303.2 502.4c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3-3.3-7.3-7.3-7.3zM336.8 502.4c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0.1-4-3.2-7.3-7.3-7.3zM320 525.1c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0-4.1-3.2-7.3-7.3-7.3zM353.7 525.1c-4 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0-4.1-3.3-7.3-7.3-7.3zM336.8 546.9c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0.1-4-3.2-7.3-7.3-7.3zM374.8 502.4c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3-3.2-7.3-7.3-7.3zM654.7 502.4c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0.1-4-3.2-7.3-7.3-7.3zM688.4 502.4c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3-3.2-7.3-7.3-7.3zM671.6 525.1c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0-4.1-3.3-7.3-7.3-7.3zM705.3 525.1c-4 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0-4.1-3.3-7.3-7.3-7.3zM688.4 546.9c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3-3.2-7.3-7.3-7.3zM726.4 502.4c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3-3.3-7.3-7.3-7.3z"
+              fill="#211F1E"
+            />
+          </motion.svg>
         </div>
         <p className="text-gray-500">
           {(isShowingSimilarIcons ? visibleSimilarIcons : visibleIcons).length
@@ -226,7 +263,63 @@ const GenerateSvg: React.FC<GenerateSvgProps> = ({
             : "Upload Image/figma file on bottom right side to generate icons"}
         </p>
       </div>
+      <div className="w-11/12 mx-auto flex flex-row items-center justify-end text-white text-sm ">
+        <motion.button
+          onClick={async () => {
+            console.log(
+              isShowingSimilarIcons ? visibleSimilarIcons : visibleIcons
+            );
+            setDownloadingComplete(true);
 
+            const images = isShowingSimilarIcons
+              ? visibleSimilarIcons
+              : visibleIcons;
+            const zip = new JSZip();
+            const folder = zip.folder("images"); // Create a folder inside the ZIP
+
+            if (!folder) return;
+
+            const imagePromises = images.map(async (image) => {
+              try {
+                const response = await fetch(image.url);
+                const blob = await response.blob();
+                folder.file(`${image.id}.png`, blob); // Add file to ZIP folder
+              } catch (error) {
+                console.error("Failed to fetch image:", image.url);
+              }
+            });
+
+            await Promise.all(imagePromises);
+
+            // Generate ZIP and trigger download
+            zip.generateAsync({ type: "blob" }).then((content) => {
+              saveAs(content, "images.zip");
+            });
+            setDownloadingComplete(false);
+          }}
+          className="border border-white rounded-md p-2 flex flex-row items-center"
+        >
+          {!downloadingComplete ? "Download icon pack" : "Downloading..."}
+
+          <motion.svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="w-4 h-4 ml-2"
+            initial={{ y: -5 }}
+            animate={{ y: [0, 5, 0] }}
+            transition={{ repeat: Infinity, duration: 1 }}
+          >
+            <path d="M12 3v12" />
+            <path d="M16 11l-4 4-4-4" />
+            <path d="M4 17h16" />
+          </motion.svg>
+        </motion.button>
+      </div>
       <div className="w-11/12 min-h-[352px] mx-auto flex items-center justify-center bg-[#1C2038] rounded-lg py-5 xl:py-10 3xl:py-7 mt-4">
         {isLoading || isFetching ? (
           <LoaderIcon className="text-white size-8 animate-spin" />
@@ -297,51 +390,93 @@ const GenerateSvg: React.FC<GenerateSvgProps> = ({
                           {isFetching ? "Searching..." : "Search icon pack"}
                         </button>
                         <button
+                          className="w-full mt-[2px] hover:bg-gray-400 hover:text-white p-2 rounded-md bg-gray-200 text-xs font-bold"
+                          // onClick={async () => {
+                          //   setEnableVariation(false);
+                          //   setActiveIcon(null);
+                          //   try {
+                          //     const response = await fetch(icon.url, {
+                          //       method: "GET",
+                          //     });
+                          //     if (!response.ok) {
+                          //       throw new Error("Failed to fetch the file");
+                          //     }
+
+                          //     const blob = await response.blob(); // Convert response to a Blob
+                          //     const downloadUrl = URL.createObjectURL(blob);
+
+                          //     // Create a hidden link and trigger download
+                          //     const link = document.createElement("a");
+                          //     link.href = downloadUrl;
+                          //     link.download = `icon-${
+                          //       icon.id || icon.similar_icon_id
+                          //     }.png`; // Specify filename
+                          //     link.click();
+
+                          //     // Revoke the Object URL after the download
+                          //     URL.revokeObjectURL(downloadUrl);
+                          //   } catch (error) {
+                          //     console.error(
+                          //       "Error downloading the file:",
+                          //       error
+                          //     );
+                          //   }
+                          //   setShowMenu(false);
+                          // }}
+
                           onClick={async () => {
-                            setEnableVariation(false);
-                            setActiveIcon(null);
+                            const options = {
+                              headers: {
+                                "x-freepik-api-key":
+                                  "FPSX174ab181d50c4792ac62f4f07899b0f9",
+                              },
+                            };
+
                             try {
-                              const response = await fetch(icon.url, {
-                                method: "GET",
-                              });
-                              if (!response.ok) {
-                                throw new Error("Failed to fetch the file");
-                              }
-
-                              const blob = await response.blob(); // Convert response to a Blob
-                              const downloadUrl = URL.createObjectURL(blob);
-
-                              // Create a hidden link and trigger download
-                              const link = document.createElement("a");
-                              link.href = downloadUrl;
-                              link.download = `icon-${
-                                icon.id || icon.similar_icon_id
-                              }.png`; // Specify filename
-                              link.click();
-
-                              // Revoke the Object URL after the download
-                              URL.revokeObjectURL(downloadUrl);
-                            } catch (error) {
-                              console.error(
-                                "Error downloading the file:",
-                                error
+                              const response = await axios.get(
+                                `https://api.freepik.com/v1/icons/${
+                                  icon.id || icon.similar_icon_id
+                                }/download?format=svg`,
+                                {
+                                  headers: {
+                                    "x-freepik-api-key":
+                                      "FPSX8e1e947b25474fa0bd150813b1456340",
+                                  },
+                                }
                               );
+                              console.log(response.data); // Handle the API response
+                            } catch (err) {
+                              console.error("Error fetching data:", err);
                             }
                             setShowMenu(false);
-                            // window.open(
-                            //   `https://www.freepik.com/icon/${
-                            //     icon.id || icon.similar_icon_id
-                            //   }#fromView=keyword&page=1&position=0&uuid=31cbda18-5c8f-4ebb-8baf-7db46b2eaa4b`,
-                            //   "_blank",
-                            //   "noopener,noreferrer"
-                            // );
                           }}
-                          className="w-full mt-[2px] hover:bg-gray-400 hover:text-white p-2 rounded-md bg-gray-200 text-xs font-bold"
+
+                          // onClick={async () => {
+                          //   const options = {
+                          //     headers: {
+                          //       "x-freepik-api-key":
+                          //         "FPSX174ab181d50c4792ac62f4f07899b0f9",
+                          //     },
+                          //   };
+
+                          //   try {
+                          //     const response = await axios.get(
+                          //       `https://app.iconocity.com/api/app/downloadSingleIcon?icon_id=${
+                          //         icon.id || icon.similar_icon_id
+                          //       }&format=svg`,
+                          //       options
+                          //     );
+                          //     console.log(response.data); // Handle the API response
+                          //   } catch (err) {
+                          //     console.error("Error fetching data:", err);
+                          //   }
+                          //   setShowMenu(false);
+                          // }}
                         >
-                          {/* {"Freepik Url"} */}
                           Download
                         </button>
                         <button
+                          className="w-full mt-[2px] hover:bg-gray-400 hover:text-white p-2 rounded-md bg-gray-200 text-xs font-bold"
                           onClick={() => {
                             setEnableVariation(true);
                             setShowMenu(false);
@@ -351,7 +486,6 @@ const GenerateSvg: React.FC<GenerateSvgProps> = ({
                             });
                             // handleScrollToBottom()
                           }}
-                          className="w-full mt-[2px] hover:bg-gray-400 hover:text-white p-2 rounded-md bg-gray-200 text-xs font-bold"
                         >
                           {"See Variations to Download"}
                         </button>
@@ -371,13 +505,13 @@ const GenerateSvg: React.FC<GenerateSvgProps> = ({
         <div className="w-full flex flex-row items-center justify-end">
           <button
             onClick={() => setIsShowingSimilarIcons(false)}
-            className="text-white mt-5  mr-6 p-3 bg-[#1C2038] rounded-xl"
+            className="text-white mt-5  mr-5 p-3 bg-[#1C2038] rounded-xl"
           >
-            Go Back
+            Return to homepage
           </button>{" "}
         </div>
       )}
-      <div className="flex justify-end mt-2">
+      <div className="flex justify-end mt-2  mr-5">
         <div className="flex items-center gap-4">
           <p className="text-white">
             {isShowingSimilarIcons ? similarIconData?.count : data?.count} icons

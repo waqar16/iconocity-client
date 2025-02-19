@@ -6,16 +6,23 @@ import { UseChangeProjectName } from "@/hooks/mutation/useChangeProjectName";
 import { UseGetProjectList } from "@/hooks/query/useGetProjectList";
 import { cn } from "@/lib/utils";
 import { Tooltip } from "@mui/material";
-import { ChevronDown, CircleHelp, LoaderIcon, SquareCheckBig } from "lucide-react";
+import {
+  ChevronDown,
+  CircleHelp,
+  LoaderIcon,
+  SquareCheckBig,
+} from "lucide-react";
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { useQueryClient } from "react-query";
 
 interface GenerateLeftSideBarProps {
   setPageNumber: React.Dispatch<React.SetStateAction<number>>;
-} 
-const ProjectList:React.FC<GenerateLeftSideBarProps> = ({setPageNumber}) => {
+}
+const ProjectList: React.FC<GenerateLeftSideBarProps> = ({ setPageNumber }) => {
   // context
   const { setSelectedProjectId, selectedProjectId } =
     useContext(ProjectContext);
+  const queryClient = useQueryClient(); // Initialize queryClient
 
   //states
   const [showMoreProjects, setShowMoreProjects] = useState(false);
@@ -56,6 +63,7 @@ const ProjectList:React.FC<GenerateLeftSideBarProps> = ({setPageNumber}) => {
   const handleSave = async (id: string) => {
     try {
       await mutateAsync({ project_id: id, new_name: updatedProjectName });
+      queryClient.invalidateQueries({ queryKey: ["projectList"] });
       setIsEditing(""); // Exit editing mode after save
     } catch (error) {
       console.error("Error updating project name:", error);
@@ -64,27 +72,39 @@ const ProjectList:React.FC<GenerateLeftSideBarProps> = ({setPageNumber}) => {
   return (
     <div className="border-b border-[#1C2037] pb-4 2xl:pb-7 px-6 mt-5 2xl:mt-10">
       {/* title */}
-   <div className="w-full flex flex-row items-center justify-between">
-   <h2 className="flex items-center gap-2 text-base text-[#BAC0DD] font-medium px-5">
-        <Icons.file />
-        Your projects
-      </h2>
-      <Tooltip title="View your projects here, separated based on each image you uploaded."
-       placement="top"
-      sx={{ 
-        tooltip: { 
-          padding: "2px 4px", // Adjust padding inside the tooltip
-          fontSize: "12px",  // Optional: Smaller text
-        },
-        popper: {
-          margin: "0px",     // Remove extra spacing
-        },
-      }}>
-      
-        <CircleHelp className="w-4 h-4 text-[#7C7F99]" />
-    </Tooltip>
-   </div>
-      {/* project list container */}
+      <div className="w-full flex flex-row items-center justify-between">
+        <h2 className="flex items-center gap-2 text-base text-[#BAC0DD] font-medium px-5">
+          <Icons.file />
+          Your projects
+        </h2>
+        <Tooltip
+          title={
+            <div style={{ padding: "5px", maxWidth: "200px" }}>
+              {/* <video width="100%" autoPlay muted loop>
+                <source src="/generate/noise-bg-2.mp4" x type="video/mp4" />
+                Your browser does not support the video tag.
+              </video> */}
+              <p style={{ fontSize: "12px", marginTop: "5px", color: "#fff" }}>
+                View your projects here, separated based on each image you
+                uploaded.
+              </p>
+            </div>
+          }
+          // title="View your projects here, separated based on each image you uploaded."
+          placement="top"
+          sx={{
+            tooltip: {
+              padding: "2px 4px", // Adjust padding inside the tooltip
+              fontSize: "12px", // Optional: Smaller text
+            },
+            popper: {
+              margin: "0px", // Remove extra spacing
+            },
+          }}
+        >
+          <CircleHelp className="w-4 h-4 text-[#7C7F99]" />
+        </Tooltip>
+      </div>
       {isLoading ? (
         <div className="py-16 flex justify-center">
           <LoaderIcon className="size-8 animate-spin" />
@@ -100,8 +120,9 @@ const ProjectList:React.FC<GenerateLeftSideBarProps> = ({setPageNumber}) => {
               <div
                 key={id}
                 onClick={() => {
-                  setPageNumber(1)
-                  setSelectedProjectId(id)}}
+                  setPageNumber(1);
+                  setSelectedProjectId(id);
+                }}
                 className={cn(
                   "flex items-center gap-5 justify-between rounded-md hover:bg-[#22263e] cursor-pointer pl-14 pr-5 py-3 ",
                   selectedProjectId === id ? "bg-[#22263e]" : "bg-transparent"

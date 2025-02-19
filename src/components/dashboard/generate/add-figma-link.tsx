@@ -2,6 +2,8 @@ import React from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import ConfirmDialog from "@/components/ui/confirm-dialog";
+import { toast } from "sonner";
 
 type AddLinksProps = {
   url: string;
@@ -19,15 +21,28 @@ const AddFigmaLink: React.FC<AddLinksProps> = ({
   uploadedFile,
 }) => {
   //add link
+  const [open, setOpen] = React.useState(false);
+
   const addLink = () => {
+    console.log("first");
+    alert("sds");
+    toast.error("dsad");
     if (url) {
       setAddedLink(url);
       setUrl("");
+      setOpen(true);
     }
   };
 
   return (
     <>
+      <ConfirmDialog
+        open={open}
+        title="Link Confirmation"
+        message="Make sure to upload single figma file url instead of an entire project for the purpose of seamless icon generation"
+        onClose={() => setOpen(false)}
+        onConfirm={() => setOpen(false)}
+      />
       {/* Add link tab */}
       <div className="flex gap-4 items-center bg-link-added-gradient border border-[#32344A] rounded-lg mx-6 py-1 2xl:py-2 px-5">
         <Input
@@ -43,7 +58,7 @@ const AddFigmaLink: React.FC<AddLinksProps> = ({
           disabled={!url}
           className="text-base bg-transparent hover:bg-transparent px-0"
         >
-          Upload
+          Uplsdsoad
         </Button>
       </div>
 

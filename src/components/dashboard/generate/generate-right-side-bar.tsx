@@ -14,10 +14,15 @@ import { toast } from "sonner";
 interface GenerateRightSideBarProps {
   setPageNumber: React.Dispatch<React.SetStateAction<number>>;
   setKeywords: React.Dispatch<React.SetStateAction<string[]>>;
-  setIsShowingSimilarIcons:React.Dispatch<React.SetStateAction<boolean>>; 
-  setEnableVariation:React.Dispatch<React.SetStateAction<boolean>>;
+  setIsShowingSimilarIcons: React.Dispatch<React.SetStateAction<boolean>>;
+  setEnableVariation: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setEnableVariation,setIsShowingSimilarIcons,setKeywords,setPageNumber}) => {
+const GenerateRightSideBar: React.FC<GenerateRightSideBarProps> = ({
+  setEnableVariation,
+  setIsShowingSimilarIcons,
+  setKeywords,
+  setPageNumber,
+}) => {
   // context
   const { setSelectedProjectId } = useContext(ProjectContext);
 
@@ -40,17 +45,16 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setEnableVari
 
   // image api
   const { mutateAsync: upLoadImageApi, isLoading: imageLoading } =
-    UseUploadImage();  
+    UseUploadImage();
   // submit
   const onSubmit = async () => {
-
     try {
       const linkPayload: {
         screen_link: string | null;
         icon_color?: string;
-        icon_style?: string; 
+        icon_style?: string;
       } = {
-        screen_link: addedLink 
+        screen_link: addedLink,
       };
       if (themeColor) {
         linkPayload["icon_color"] = themeColor;
@@ -70,29 +74,33 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setEnableVari
           formData.append("icon_style", selectedIconStyle);
         }
 
-       const data2 = await upLoadImageApi(formData, {
+        const data2 = await upLoadImageApi(formData, {
           onSuccess(data) {
             setSelectedProjectId(data.id);
             setThemeColor("");
             setPageNumber(1);
             setSelectedIconStyle("");
-            setIsShowingSimilarIcons(false)
-            setEnableVariation(false)
+            setIsShowingSimilarIcons(false);
+            setEnableVariation(false);
           },
-          onError(err){
-            if(err.response.data.error){
-              toast.error(err.response.data.error)
-            } 
-          }
-        }
-      );
-      setKeywords(data2?.attributes?.description.split(",").slice(1,4))
-      console.log("data2?.attributes?.description.split(1,4)",data2?.attributes?.description.split(",").slice(1,4))
-      
-      localStorage.setItem("keywords", JSON.stringify(data2?.attributes?.description.split(",").slice(1,4)))
-      
+          onError(err) {
+            if (err.response.data.error) {
+              toast.error(err.response.data.error);
+            }
+          },
+        });
+        setKeywords(data2?.attributes?.description.split(",").slice(1, 4));
+        console.log(
+          "data2?.attributes?.description.split(1,4)",
+          data2?.attributes?.description.split(",").slice(1, 4)
+        );
+
+        localStorage.setItem(
+          "keywords",
+          JSON.stringify(data2?.attributes?.description.split(",").slice(1, 4))
+        );
       }
-      
+
       //  add link API
       if (addedLink) {
         const link_api = await addLinkApi(linkPayload, {
@@ -100,25 +108,25 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setEnableVari
             setSelectedProjectId(data.id);
             setThemeColor("");
             setSelectedIconStyle("");
-            setIsShowingSimilarIcons(false)
-            setEnableVariation(false)
-          }
+            setIsShowingSimilarIcons(false);
+            setEnableVariation(false);
+          },
 
-          ,
-          onError(err){
+          onError(err) {
             if (err?.response?.data?.error && !err?.response?.data?.oauth_url) {
-              toast.error(err.response.data.error)
-               
+              toast.error(err.response.data.error);
             }
-             
-          }
+          },
         });
         // setKeywords(link_api?.attributes?.keywords.slice(1,4))
-        setKeywords(link_api?.attributes?.description.split(",").slice(1,4))
- 
-      const cleanedKeywords = link_api?.attributes?.description.split(",").slice(1,4).map((keyword: string) => keyword.replace(/['"]+/g, '').trim());
+        setKeywords(link_api?.attributes?.description.split(",").slice(1, 4));
 
-      localStorage.setItem("keywords", JSON.stringify(cleanedKeywords));
+        const cleanedKeywords = link_api?.attributes?.description
+          .split(",")
+          .slice(1, 4)
+          .map((keyword: string) => keyword.replace(/['"]+/g, "").trim());
+
+        localStorage.setItem("keywords", JSON.stringify(cleanedKeywords));
       }
 
       setUploadedFile(null);
@@ -127,17 +135,17 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setEnableVari
       console.error(error);
     }
   };
-  
+
   return (
     <div className="h-[calc(100vh-74px)] w-72 xl:w-80 2xl:w-96 bg-[#080e28] text-white rounded-tl-[24px] p-4 xl:p-5 overflow-y-auto hide-scrollbar">
       {/* color picker tab and select style */}
-   
+
       <ThemeColor
         setThemeColor={setThemeColor}
         themeColor={themeColor}
         setSelectedIconStyle={setSelectedIconStyle}
         selectedIconStyle={selectedIconStyle}
-      /> 
+      />
       {/* upload file tab and add link tab */}
       <div className="bg-colorPicker-gradient border  border-[#1C2037] rounded-2xl py-4 mt-4">
         {/* upload file tab */}
@@ -179,7 +187,7 @@ const GenerateRightSideBar:React.FC<GenerateRightSideBarProps> = ({setEnableVari
             linkLoading || imageLoading || (!uploadedFile && !addedLink)
           }
           className={cn(
-            "flex gap-2 text-base w-full h-10 2xl:h-12 ",
+            "generate-button flex gap-2 text-base w-full h-10 2xl:h-12 ",
             linkLoading || imageLoading || (!uploadedFile && !addedLink)
               ? "border border-[#04ADA3] bg-transparent cursor-not-allowed"
               : "border-none bg-generate-button-gradient"

@@ -4,9 +4,10 @@ import { CircleHelp, X } from "lucide-react";
 import { Icons } from "@/components/icons";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input"; 
+import { Input } from "@/components/ui/input";
 
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from "@mui/material/Tooltip";
+import ConfirmDialog from "@/components/ui/confirm-dialog";
 const UploadFile = ({
   onFileUpload,
   uploadedFiles,
@@ -15,7 +16,7 @@ const UploadFile = ({
   url,
   setUrl,
   addedLink,
-  setAddedLink
+  setAddedLink,
 }: {
   uploadedFiles: File | null;
   setUploadedFiles: React.Dispatch<React.SetStateAction<File | null>>;
@@ -26,7 +27,7 @@ const UploadFile = ({
   addedLink: string | null;
   setAddedLink: React.Dispatch<React.SetStateAction<string | null>>;
 }) => {
-  const [activeTab, setActiveTab] = useState<"upload" | "url">("upload"); 
+  const [activeTab, setActiveTab] = useState<"upload" | "url">("upload");
 
   const onDrop = (acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
@@ -47,6 +48,7 @@ const UploadFile = ({
   const handleRemoveFile = () => {
     setUploadedFiles(null);
   };
+  const [open, setOpen] = React.useState(false);
 
   const handleAddUrl = () => {
     if (url.trim()) {
@@ -55,6 +57,9 @@ const UploadFile = ({
     }
   };
   const addLink = () => {
+    console.log("first");
+
+    setOpen(true);
     if (url) {
       setAddedLink(url);
       setUrl("");
@@ -62,23 +67,31 @@ const UploadFile = ({
   };
   return (
     <div className="space-y-4">
+      <ConfirmDialog
+        open={open}
+        title="Link Confirmation"
+        message="Make sure to upload single figma file url instead of an entire project for the purpose of seamless icon generation"
+        onClose={() => setOpen(false)}
+        onConfirm={() => setOpen(false)}
+      />
       {/* Title */}
       <div className="flex items-center justify-between px-4">
         <h1 className="text-sm text-[#BAC0DD]">Upload Design</h1>
-      <Tooltip title="Upload Your File or File Url on this section to generate icons"
-       placement="top"
-      sx={{ 
-        tooltip: { 
-          padding: "2px 4px", // Adjust padding inside the tooltip
-          fontSize: "12px",  // Optional: Smaller text
-        },
-        popper: {
-          margin: "0px",     // Remove extra spacing
-        },
-      }}>
-      
-        <CircleHelp className="w-4 h-4 text-[#7C7F99]" />
-    </Tooltip>
+        <Tooltip
+          title="Upload Your File or File Url on this section to generate icons"
+          placement="top"
+          sx={{
+            tooltip: {
+              padding: "2px 4px", // Adjust padding inside the tooltip
+              fontSize: "12px", // Optional: Smaller text
+            },
+            popper: {
+              margin: "0px", // Remove extra spacing
+            },
+          }}
+        >
+          <CircleHelp className="w-4 h-4 text-[#7C7F99]" />
+        </Tooltip>
       </div>
 
       {/* Toggler */}
@@ -92,7 +105,7 @@ const UploadFile = ({
               : "bg-transparent text-[#7C7F99] border-[#7C7F99]"
           )}
         >
-          Upload File
+          Upload Image
         </button>
         <button
           onClick={() => setActiveTab("url")}
@@ -103,7 +116,7 @@ const UploadFile = ({
               : "bg-transparent text-[#7C7F99] border-[#7C7F99]"
           )}
         >
-          Add File URL
+          Add Figma Link
         </button>
       </div>
 
@@ -120,10 +133,9 @@ const UploadFile = ({
           >
             <input {...getInputProps()} />
             <p className="text-[10px] text-[#7C7F99] text-center ">
-              Drag & Drop or Choose a file to upload
+              Drag & Drop or Choose an image file to upload
             </p>
             <Icons.Upload className="w-3 h-3 mx-auto" />
-            
           </div>
 
           {/* Uploaded File Display */}
@@ -141,7 +153,9 @@ const UploadFile = ({
                   <Icons.UploadFile />
                 )}
                 <div className="flex flex-col gap-1">
-                  <span className="text-xs text-white">{uploadedFiles.name}</span>
+                  <span className="text-xs text-white">
+                    {uploadedFiles.name}
+                  </span>
                   <span className="text-[10px] text-[#BAC0DD]">
                     {(uploadedFiles.size / 1024).toFixed(2)} KB
                   </span>
@@ -160,38 +174,37 @@ const UploadFile = ({
         <div className=" ">
           {/* Add File URL */}
           <div className="flex gap-4 items-center bg-link-added-gradient border border-[#32344A] rounded-lg mx-6 py-1 2xl:py-2 px-5">
-        <Input
-          type="url"
-          placeholder="image/figma URL"
-
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          disabled={!!uploadedFiles}
-          className="placeholder:text-[#7C7F99] border-none bg-transparent px-0"
-        />
-        <Button
-          onClick={addLink}
-          disabled={!url}
-          className="text-base bg-transparent hover:bg-transparent px-0"
-        >
-          Upload
-        </Button>
-      </div>
-      {addedLink && addedLink.length > 0 && (
-        <div className="flex flex-col gap-3 bg-link-added-gradient border border-[#32344A] rounded-lg mt-4 mx-6  p-3">
-          <div className="flex items-start justify-between gap-3">
-            <p className="scrollbar-hide w-[85%] text-[10px] text-blue-400 overflow-auto">
-              {addedLink}
-            </p>
+            <Input
+              type="url"
+              placeholder="image/figma URL"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              disabled={!!uploadedFiles}
+              className="placeholder:text-[#7C7F99] border-none bg-transparent px-0"
+            />
             <Button
-              onClick={() => setAddedLink(null)}
-              className="text-sm text-red-400 px-0 bg-transparent hover:bg-transparent h-0"
+              onClick={addLink}
+              disabled={!url}
+              className="text-base bg-transparent hover:bg-transparent px-0"
             >
-              <X className="w-4 h-auto text-white hover:scale-125" />
+              Upload
             </Button>
           </div>
-        </div>
-      )}
+          {addedLink && addedLink.length > 0 && (
+            <div className="flex flex-col gap-3 bg-link-added-gradient border border-[#32344A] rounded-lg mt-4 mx-6  p-3">
+              <div className="flex items-start justify-between gap-3">
+                <p className="scrollbar-hide w-[85%] text-[10px] text-blue-400 overflow-auto">
+                  {addedLink}
+                </p>
+                <Button
+                  onClick={() => setAddedLink(null)}
+                  className="text-sm text-red-400 px-0 bg-transparent hover:bg-transparent h-0"
+                >
+                  <X className="w-4 h-auto text-white hover:scale-125" />
+                </Button>
+              </div>
+            </div>
+          )}
           {/* <div className="flex flex-col gap-2">
             <input
               type="text"

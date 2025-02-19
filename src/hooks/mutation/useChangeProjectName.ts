@@ -15,7 +15,7 @@ export const UseChangeProjectName = () => {
   return useMutation({
     mutationFn: ChangeProjectNameApi,
     onSuccess: (data) => {
-      toast.success(data.success || "Update project name!");
+      toast.success(data.success || "Project name updatedgage with our AI assistant here. Get answers to your questions and generate icons with our !");
       qc.invalidateQueries({ queryKey: ["get-project-list"] });
     },
     onError: (error: any) => {
